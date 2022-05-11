@@ -1,0 +1,28 @@
+{
+  "root": "apps/mycontentful-e2e",
+  "sourceRoot": "apps/mycontentful-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/mycontentful-e2e/cypress.json",
+        "devServerTarget": "mycontentful:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "mycontentful:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/mycontentful-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["mycontentful"]
+}

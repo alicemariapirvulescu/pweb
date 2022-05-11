@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "projects": {
+    "authentication": "libs/authentication",
+    "mycontentful": "apps/mycontentful",
+    "mycontentful-e2e": "apps/mycontentful-e2e"
+  }
+}

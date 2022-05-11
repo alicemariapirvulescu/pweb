@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "name": "Jane Doe",
+        "message": "Great food, nice place",
+        "rating": 4.5
+    },
+    {
+        "id": 2,
+        "name": "Ana Maria",
+        "message": "Fast delivery, well cooked",
+        "rating": 3.5
+    },
+    {
+        "id": 3,
+        "name": "Marian Neagu",
+        "message": "Took to long, they messed up my order :(",
+        "rating": 3.6
+    }
+]

@@ -17,11 +17,16 @@ export interface IAccountProps {
 
 export default function Account(props: IAccountProps) {
 
-    const { isLoggedIn } = useSelector((state: RootState) => state.auth)
+    const { isLoggedIn, user } = useSelector((state: RootState) => state.auth)
 
     if (!isLoggedIn) {
         console.log("Navigate to login");
         return <Navigate to="/" replace />;
+    }
+    
+    if(user.role == 'MANAGER'){
+        console.log("Navigate to login");
+        return <Navigate to="/manager" replace />;
     }
 
     return (

@@ -5,18 +5,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../../apps/mycontentful/src/app/reducers'
 import { MouseEvent } from 'react';
 import { authSlice } from '../redux/slice'
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import Map from './Map';
 import Restaurants from './restaurants';
-import fastFoodIcon from './icons/fast-food.svg';
+import house from './icons/house.svg';
 
 export interface IHeaderProps {
 }
 
 export default function Header(props: IHeaderProps) {
 
-    const {isLoggedIn } = useSelector((state: RootState) => state.auth)
-    const dispatch = useDispatch()
+    const { isLoggedIn, user } = useSelector((state: RootState) => state.auth)
+    const dispatch = useDispatch();
+    let navigate = useNavigate();
 
     if (!isLoggedIn) {
         console.log("Navigate to login");
@@ -29,24 +30,33 @@ export default function Header(props: IHeaderProps) {
 
     }
 
-    const start =   
+    const checkRequests = (e: any) => {
+        e.preventDefault();
+        navigate("/reservations");
+    }
+
+
+    const start =
         <div className="col-12 grid-nogutter">
-            <img src={fastFoodIcon} width="50 rem" height="50 rem" />
-            <header className="text-header">Starving? Let us help you!</header>
+            <img src={house} width="50 rem" height="50 rem" />
+            <div className='rowC text-header'>
+                <h3 >Needing a home? &nbsp; </h3>
+                <h3 style={{"color": "darkgrey"}}> Let us help you.</h3>
+            </div>
         </div>;
 
-    const end = 
-    <div className="grid grid-nogutter">
-            <Button className="account-button" label="Account" icon="pi pi-user" onClick={handleLogout} />
-            <Button className="logout-button" label="Logout" icon="pi pi-sign-out" onClick={handleLogout} />
-    </div>
-
-
-
+    const end =
+        <div>
+           <div className='rowC'>
+                <Button style={{marginRight: "0.5rem"}}type="button" label="Requests" icon="pi pi-users" className="p-button-warning" badge="8" badgeClassName="p-badge-danger" onClick = {checkRequests}/>
+                <Button style={{marginRight: "0.5rem"}} className="account-button" label="Account" icon="pi pi-user" onClick={handleLogout} />
+                <Button style={{marginRight: "0.5rem"}} className="logout-button" label="Logout" icon="pi pi-sign-out" onClick={handleLogout} />
+            </div>
+        </div>
 
     return (
         <div>
-            <Menubar start={start} end={end}/>
+            <Menubar start={start} end={end} />
         </div>
 
     );

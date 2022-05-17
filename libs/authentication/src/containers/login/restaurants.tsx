@@ -51,7 +51,7 @@ const Restaurants = () => {
                 <div className="product-list-item">
                     <div className="product-list-detail">
                         <div className="product-name">{data.name}</div>
-                        <div className="product-description" >{data.name}</div>
+                        <div className="product-description" >{data.description}</div>
                         <Rating value={data.review.average} readOnly cancel={false}></Rating>
                         <i className="pi pi-tag product-category-icon"></i><span className="product-category">{data.category}</span>
                     </div>
@@ -81,12 +81,15 @@ const Restaurants = () => {
                         </div>
                         <div className="product-description">{data.name}</div>
 
-                        <div>  Average review: <b>{data.review.average.toPrecision(3)}/5.0 &nbsp;</b>  </div>
+                        <div >  Average review: <b>{data.review.average.toPrecision(3)}/5.0 &nbsp;</b>  </div>
                         <Rating value={data.review.average} readOnly cancel={false} />
                     </div>
-
-                    <div className="product-grid-item-bottom " style={{ marginTop: '10px', alignContent: 'center', justifyContent: 'center' }}>
-                        <Button icon="pi pi-info-circle" label="More details" onClick={(e) => handleMoreDetails(e, data)} ></Button>
+                    <div>
+                    
+                        <Button style={{ float: 'left'}} icon="pi pi-heart" className="p-button-lg p-button-rounded p-button-danger p-button-text" tooltip="Add to favorites" tooltipOptions={{ position: 'bottom' }} aria-label="Bookmark" />
+                        <div className="product-grid-item-bottom " style={{ marginTop: '10px', marginLeft: "11.5rem", alignContent: 'center !important', justifyContent: 'center !important' }}>
+                            <Button icon="pi pi-info-circle" label="More details" onClick={(e) => handleMoreDetails(e, data)} ></Button>
+                        </div>
                     </div>
                 </div>
             </div>

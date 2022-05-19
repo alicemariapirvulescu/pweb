@@ -9,6 +9,7 @@ import Map from './Map';
 import Restaurants from './restaurants';
 import fastFoodIcon from './icons/fast-food.svg';
 import { Navigate, useNavigate } from "react-router-dom";
+import house from './icons/house.svg';
 
 
 export interface IHeaderLoggedOutProps {
@@ -32,8 +33,11 @@ export default function HeaderLoggedOut(props: IHeaderLoggedOutProps) {
 
     const start =
         <div className="col-12 grid-nogutter">
-            <img src={fastFoodIcon} width="50 rem" height="50 rem" />
-            <header className="text-header">Starving? Let us help you!</header>
+            <img src={house} width="50 rem" height="50 rem" />
+            <div className='rowC text-header'>
+                <h3 >Needing a home? &nbsp; </h3>
+                <h3 style={{"color": "darkgrey"}}> Do you want to help the refugees?</h3>
+            </div>
         </div>;
 
     const end =

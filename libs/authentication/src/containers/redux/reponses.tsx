@@ -45,7 +45,8 @@ export interface RestaurantState {
     toastError: string,
     toastSuccess: string,
     image: string,
-    reservations: ReservationRequest[]
+    reservations: ReservationRequest[],
+    houses: HouseResponse[],
 }
 
 export interface ReservationRequest{

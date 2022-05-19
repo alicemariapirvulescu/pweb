@@ -16,6 +16,10 @@ import HeaderLoggedOut from "./header-logged-out";
 import { Toast } from 'primereact/toast';
 import { useRef } from 'react';
 
+export const OAUTH2_REDIRECT_URI = 'http://localhost:4200/oauth2/redirect'
+export const API_BASE_URL = 'http://localhost:8080';
+
+export const GOOGLE_AUTH_URL = API_BASE_URL + '/oauth2/authorize/google?redirect_uri=' + OAUTH2_REDIRECT_URI;
 export interface LoginProps {
 
 }
@@ -36,10 +40,8 @@ const Login = () => {
 
     if (isLoggedIn) {
         console.log("Navigate to account")
-        return <Navigate to="/restaurants" replace />;
+        return <Navigate to="/houses-guest" replace />;
     }
-
-
 
     return (
         <div className="card">
@@ -65,6 +67,10 @@ const Login = () => {
 
                 </form>
             </Card>
+            <div className="social-login">
+                <a className="btn btn-block social-btn google" href={GOOGLE_AUTH_URL}>
+                   Log in with Google </a>
+            </div>
         </div>)
 
 }

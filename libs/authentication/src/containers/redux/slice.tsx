@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import { setTimeout } from 'timers/promises';
 import { LoginPayload, RegisterPayload, ReviewPayload, HouseRequest
  } from './payloads';
-import { LoginResponse, RestaurantResponse, CategoryReview,  RestaurantState, PersonReview, ReservationRequest } from './reponses';
+import { LoginResponse, RestaurantResponse, CategoryReview,  RestaurantState, PersonReview, ReservationRequest, HouseResponse } from './reponses';
 
 
 export const loginUser = createAsyncThunk(
@@ -52,7 +52,7 @@ export const saveReview = createAsyncThunk(
 
 export const savePlace = createAsyncThunk(
   'auth/addPlace',
-  async (payload: NewPlaceRequest): Promise<Number> => {
+  async (payload: HouseRequest): Promise<Number> => {
     try {
       const response: AxiosResponse = await axios.post('http://localhost:8080/api/review', payload);
       return response.status;
@@ -82,6 +82,15 @@ export const getReservations = createAsyncThunk(
   }
 )
 
+export const getHouses = createAsyncThunk(
+  'auth/getHouses',
+  async (): Promise<HouseResponse[]> => {
+    const response: AxiosResponse<HouseResponse[]> = await axios.get('http://127.0.0.1:5500/apps/mocks/houses.json');
+    console.log("Get houses was called");
+    return response.data;
+  }
+)
+
 
 export const getReviews = createAsyncThunk(
   'auth/getReviews',
@@ -102,19 +111,11 @@ export const getRestaurant = createAsyncThunk(
   }
 )
 
-export const saveImage = createAsyncThunk(
-  'auth/saveImage',
-  async (image: string): Promise<string> => {
-    return image;
-  }
-)
-
-
 const initialState: RestaurantState =
 {
-  restaurants: [], restaurant: {} as RestaurantResponse, isLoggedIn: true,
+  restaurants: [], restaurant: {} as RestaurantResponse, isLoggedIn: false,
   user: {} as LoginResponse, reviews: [], review: {} as CategoryReview, toastError: '', toastSuccess: '',
-  image: '', reservations: []
+  image: '', reservations: [], houses: []
 }
 
 // Then, handle actions in your reducers:
@@ -126,6 +127,9 @@ export const authSlice = createSlice({
       console.log('logging out');
       state.isLoggedIn = false;
       sessionStorage.removeItem("token");
+    },
+    setIsLoggedIn(state) {
+      state.isLoggedIn = true;
     },
     setToastSuccess(state, action: PayloadAction<string>) {
       state.toastSuccess = action.payload;
@@ -192,13 +196,6 @@ export const authSlice = createSlice({
       state.reservations = response.payload;
       console.log(state.reservations);
     }) 
-      
-    builder.addCase(saveImage.fulfilled, (state, response) => {
-      // Add restaurants to the slice array
-      state.image = response.payload;
-      console.log(state.image);
-    })
-
     
     builder.addCase(savePlace.fulfilled, (state, response) => {
       // Set is Logged in to true
@@ -211,6 +208,12 @@ export const authSlice = createSlice({
       console.log('save place reject')
       authSlice.caseReducers.setToastError(state, { payload: 'Add place failed!', type: 'toast' })
 
+    })
+
+    builder.addCase(getHouses.fulfilled, (state, response) => {
+      // Set is Logged in to true
+      console.log('save place success');
+      state.houses = response.payload;
     })
   },
 

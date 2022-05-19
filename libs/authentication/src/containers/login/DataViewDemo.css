@@ -15,6 +15,11 @@
     font-size: large;
 }
 
+.dataview-demo .medium-writing {
+    margin: 0 0 1rem 0;
+    font-size: small;
+}
+
 .dataview-demo .product-category-icon {
     vertical-align: middle;
     margin-right: .5rem;

@@ -27,33 +27,30 @@ import './styles.scss';
 
 const Preferences = () => {
     const dispatch = useDispatch();
-    const [distanceValue, setDistanceValue] = useState(10);
-    const [foodValue, setFoodValue] = useState(50);
-    const [staffValue, setStaffValue] = useState(50);
-    const [placeValue, SetPlaceValue] = useState(50);
-    const [priceValue, setPriceValue] = useState(50);
-    const [cityValue, setCityValue] = useState('');
 
-
-    const { id } = useParams();
+    const [city, setCity] = useState('');
+    const [dates, setDates] = useState();
+    const [numberOfPeople, setNumberOfPeople] = useState();
 
     // useEffect(() => {
     //     if (id) {
-    //         dispatch(getPreferences(id));
+    //         dispatch(getCities());
     //     }
 
-    //     console.log(preferences);
+    //     console.log(cities);
 
     // }, []);
 
-    const cities = [
-        { name: 'Bucuresti' },
-        { name: 'Ramnicul Valcea' },
-        { name: 'Pitesti' }
-    ];
+    const cities = ['Bucuresti', 'Ramnicul Valcea', 'Pitesti'];
 
     const onCityChange = (e) => {
-        setCityValue(e.value);
+        setCity(e.value);
+    }
+
+    const AddPreferences = () =>{
+        const BookingRequest = {
+                city: city, 
+        }
     }
 
     return (
@@ -62,37 +59,21 @@ const Preferences = () => {
             justifyContent: 'center'
         }}>
 
-            <h4  style={{ marginTop: '2rem' }}> Select preferences </h4>
-            <Divider/>
-            <h5 style={{ marginTop: '3rem' }}> City:</h5>
-            <div className="field-radiobutton">
-                        <RadioButton inputId="city1" name="city" value="Bucuresti" onChange={(e) => setCityValue(e.value)} checked={cityValue === 'Bucuresti'} />
-                        <label htmlFor="city1">Bucuresti</label>
-                    </div>
-                    <div className="field-radiobutton">
-                        <RadioButton inputId="city2" name="city" value="Ramnicul Valcea" onChange={(e) => setCityValue(e.value)} checked={cityValue === 'Ramnicul Valcea'} />
-                        <label htmlFor="city2">Ramnicul Valcea</label>
-                    </div>
-            <h5 style={{ marginTop: '1rem' }}> Food: {foodValue/20}</h5>
-            <Slider value={foodValue} className='slider' onChange={(e) => setFoodValue(e.value)} />
+            <h4 style={{ marginTop: '2rem' }}> Select preferences </h4>
+            <Divider />
+            <h5 style={{ marginTop: '1rem'}}> City:</h5>
+            <Dropdown  style={{ width: '16rem'}} value={city} options={cities} onChange={onCityChange} placeholder="Select a City" />
 
-            <h5 className=' mt1'> Staff stars: {staffValue/20} </h5>
-            <Slider value={staffValue} className='slider' onChange={(e) => setStaffValue(e.value)} />
+            <h5 style={{ marginTop: '1rem' }}> Booking period:</h5>
+            <Calendar style={{ width: '16rem'}} id="range" value={dates} onChange={(e) => setDates(e.value)} selectionMode="range" readOnlyInput 
+             placeholder={'Staying dates'}/>
 
-            <h5 className=' mt1'> Place stars: {placeValue/20} </h5>
-            <Slider value={placeValue} className='slider' onChange={(e) => SetPlaceValue(e.value)} />
+            <h5 style={{ marginTop: '1rem' }}> Number of people:</h5>
+            <InputNumber  inputId="minmax-buttons" value={numberOfPeople} onValueChange={(e) => setNumberOfPeople(e.value)} mode="decimal" showButtons min={0} max={100}
+                placeholder={'Person number'} required />
 
-            <h5 className=' mt1'> Price stars: {priceValue/20} </h5>
-            <Slider value={priceValue} className='slider' onChange={(e) => setPriceValue(e.value)} />
-
-            <h5 className=' mt1'> Choose distance: {distanceValue} km</h5>
-            <Slider value={distanceValue} className='slider' onChange={(e) => setDistanceValue(e.value)} step={0.5} />
-
-            <Button label="Apply" icon='pi pi-sort-alt' style={{
-                marginTop: '60px', alignContent: 'center', justifyContent: 'center',
-                position: 'relative', left: '25%'
-            }}
-                onClick={() => onClick()} />
+            <h5 style={{ marginTop: '1rem'}}></h5>
+            <Button  style={{marginTop: '1rem',  marginLeft:'4.5rem'}}label="Apply" icon='pi pi-search-plus' onClick={() => onClick()} />
 
         </div>
     );

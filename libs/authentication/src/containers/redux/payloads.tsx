@@ -33,3 +33,16 @@ export interface HouseRequest{
     address: string,
     city: string
 }
+
+export interface BookingDates {
+    startDate: Date,
+    endDate : Date
+}
+
+export interface BookingRequest{
+
+    bookingPeriod : BookingDates,
+    numPeople : number,
+    messageGuest : string,
+    numberGuest : number
+}

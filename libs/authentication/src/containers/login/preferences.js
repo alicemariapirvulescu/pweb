@@ -15,7 +15,7 @@ import { Button } from 'primereact/button';
 import { InputNumber } from 'primereact/inputnumber';
 import React, { useEffect, useState } from 'react';
 import { Avatar } from 'primereact/avatar';
-import { authSlice, getPreferences } from '../redux/slice';
+import { getCities, getHouses, getFilteredHouses } from '../redux/slice';
 import { Card } from 'primereact/card';
 import { Slider } from 'primereact/slider';
 import { RadioButton } from 'primereact/radiobutton';
@@ -28,28 +28,25 @@ const Preferences = () => {
     const dispatch = useDispatch();
 
     const [city, setCity] = useState('');
-    const [dates, setDates] = useState();
+    const [numberOfDays, setNumberOfDays] = useState();
     const [numberOfPeople, setNumberOfPeople] = useState();
+    const { cities } = useSelector((state) => state.auth)
 
-    // useEffect(() => {
-    //     if (id) {
-    //         dispatch(getCities());
-    //     }
+    useEffect(() => {
+        dispatch(getCities());
+        console.log(cities);
+    }, []);
 
-    //     console.log(cities);
+    const onApply = (e) => {
+        dispatch(getFilteredHouses({city: city, numDays: numberOfDays, numPeople:numberOfPeople}));
+    }
 
-    // }, []);
-
-    const cities = ['Bucuresti', 'Ramnicul Valcea', 'Pitesti'];
+    const onClear = (e) => {
+        dispatch(getHouses());
+    }
 
     const onCityChange = (e) => {
         setCity(e.value);
-    }
-
-    const AddPreferences = () =>{
-        const BookingRequest = {
-                city: city, 
-        }
     }
 
     return (
@@ -60,19 +57,22 @@ const Preferences = () => {
 
             <h4 style={{ marginTop: '2rem' }}> Select preferences </h4>
             <Divider />
-            <h5 style={{ marginTop: '1rem'}}> City:</h5>
-            <Dropdown  style={{ width: '16rem'}} value={city} options={cities} onChange={onCityChange} placeholder="Select a City" />
+            <h5 style={{ marginTop: '1rem' }}> City:</h5>
+            <Dropdown style={{ width: '16rem' }} value={city} options={cities} onChange={onCityChange} placeholder="Select a City" required/>
 
-            <h5 style={{ marginTop: '1rem' }}> Booking period:</h5>
-            <Calendar style={{ width: '16rem'}} id="range" value={dates} onChange={(e) => setDates(e.value)} selectionMode="range" readOnlyInput 
-             placeholder={'Staying dates'}/>
-
-            <h5 style={{ marginTop: '1rem' }}> Number of people:</h5>
-            <InputNumber  inputId="minmax-buttons" value={numberOfPeople} onValueChange={(e) => setNumberOfPeople(e.value)} mode="decimal" showButtons min={0} max={100}
+            <h5 style={{ marginTop: '1rem' }}> Number of days:</h5>
+            <InputNumber inputId="minmax-buttons" value={numberOfPeople} onValueChange={(e) => setNumberOfPeople(e.value)} mode="decimal" showButtons min={0} max={100}
                 placeholder={'Person number'} required />
 
-            <h5 style={{ marginTop: '1rem'}}></h5>
-            <Button  style={{marginTop: '1rem',  marginLeft:'4.5rem'}}label="Apply" icon='pi pi-search-plus' onClick={() => onClick()} />
+            <h5 style={{ marginTop: '1rem' }}> Number of people:</h5>
+            <InputNumber inputId="minmax-buttons" value={numberOfDays} onValueChange={(e) => setNumberOfDays(e.value)} mode="decimal" showButtons min={0} max={100}
+                placeholder={'Person number'} required />
+
+            <h5 style={{ marginTop: '1rem' }}></h5>
+            <Button style={{ marginTop: '1rem', marginLeft: '4.5rem' }} label="Apply" icon='pi pi-search-plus' onClick={() => onApply()} />
+
+            <h5 style={{ marginTop: '1rem' }}></h5>
+            <Button style={{ marginTop: '1rem', marginLeft: '4.5rem' }} label="Clear" icon='pi pi-ban' onClick={() => onClear()} />
 
         </div>
     );

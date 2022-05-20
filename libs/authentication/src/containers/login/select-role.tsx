@@ -18,7 +18,7 @@ import { Dropdown } from 'primereact/dropdown';
 import HeaderLoggedOut from "./header-logged-out";
 import { RegisterPayload } from "../redux/payloads";
 import { RadioButton } from "primereact/radiobutton";
-import { RestaurantState } from "../redux/reponses";
+import { RefugeeState } from "../redux/reponses";
 import { RootState } from "apps/mycontentful/src/app/reducers";
 import house from './icons/house.svg';
 

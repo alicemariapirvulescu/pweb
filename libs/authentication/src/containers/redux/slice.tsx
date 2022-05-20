@@ -1,10 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios, { AxiosResponse } from 'axios';
-import { setTimeout } from 'timers/promises';
-import {
-  LoginPayload, RegisterPayload, ReviewPayload, HouseRequest
-} from './payloads';
-import { LoginResponse, RestaurantResponse, CategoryReview, RestaurantState, PersonReview, BookingRequest, HouseResponse } from './reponses';
+import { LoginPayload, RegisterPayload, HouseRequest, FilterRequest } from './payloads';
+import { LoginResponse, RefugeeState, BookingRequest, HouseResponse } from './reponses';
 
 
 export const loginUser = createAsyncThunk(
@@ -88,7 +85,7 @@ export const getBookings = createAsyncThunk(
   'auth/getReservations',
   async (): Promise<BookingRequest[]> => {
     const authToken = localStorage.getItem('token');
-    const response: AxiosResponse<BookingRequest[]> = await axios.get('http://127.0.0.1:5500/apps/mocks/reservations.json',
+    const response: AxiosResponse<BookingRequest[]> = await axios.get('http://localhost:8080/refugees/api/dashboard/houses',
       {
         headers: {
           Authorization: 'Bearer ' + authToken //the token is a variable which holds the token
@@ -105,6 +102,53 @@ export const getHouses = createAsyncThunk(
   async (): Promise<HouseResponse[]> => {
     const authToken = localStorage.getItem('token');
     const response: AxiosResponse<HouseResponse[]> = await axios.get('http://localhost:8080/refugees/api/dashboard/houses',
+      {
+        headers: {
+          Authorization: 'Bearer ' + authToken //the token is a variable which holds the token
+        }
+      });
+    console.log("Get houses was called");
+    return response.data;
+  }
+)
+
+export const getFilteredHouses = createAsyncThunk(
+  'auth/getFitleredHouses',
+  async (payload: FilterRequest): Promise<HouseResponse[]> => {
+    const authToken = localStorage.getItem('token');
+    const response: AxiosResponse<HouseResponse[]> = await axios.post('http://localhost:8080/refugees/api/dashboard/houses/filtered',
+    payload,
+      {
+        headers: {
+          Authorization: 'Bearer ' + authToken //the token is a variable which holds the token
+        }
+      });
+    console.log("Get houses filtered was called");
+    return response.data;
+  }
+)
+
+export const getCities = createAsyncThunk(
+  'auth/getCities',
+  async (): Promise<string[]> => {
+    const authToken = localStorage.getItem('token');
+    const response: AxiosResponse<string[]> = await axios.get('http://localhost:8080/refugees/api/dashboard/cities',
+      {
+        headers: {
+          Authorization: 'Bearer ' + authToken //the token is a variable which holds the token
+        }
+      });
+    console.log("Get houses was called");
+    return response.data;
+  }
+)
+
+
+export const getMyHouses = createAsyncThunk(
+  'auth/myHouses',
+  async (): Promise<HouseResponse[]> => {
+    const authToken = localStorage.getItem('token');
+    const response: AxiosResponse<HouseResponse[]> = await axios.get('http://localhost:8080/refugees/api/dashboard/my/houses',
       {
         headers: {
           Authorization: 'Bearer ' + authToken //the token is a variable which holds the token
@@ -137,11 +181,11 @@ export const saveHouse = createAsyncThunk(
 )
 
 
-const initialState: RestaurantState =
+const initialState: RefugeeState =
 {
-  restaurants: [], restaurant: {} as RestaurantResponse, isLoggedIn: false,
-  user: undefined, reviews: [], review: {} as CategoryReview, toastError: '', toastSuccess: '',
-  image: '', reservations: [], houses: []
+  isLoggedIn: false, user: undefined,
+  toastError: '', toastSuccess: '',
+  reservations: [], houses: [], myhouses: [], cities: ['']
 }
 
 // Then, handle actions in your reducers:
@@ -160,7 +204,7 @@ export const authSlice = createSlice({
     setToastSuccess(state, action: PayloadAction<string>) {
       state.toastSuccess = action.payload;
     },
-    setUser(state, action: PayloadAction<RestaurantState['user']>) {
+    setUser(state, action: PayloadAction<RefugeeState['user']>) {
       state.user = action.payload;
     },
     setToastError(state, action: PayloadAction<string>) {
@@ -224,6 +268,41 @@ export const authSlice = createSlice({
       // Set is Logged in to true
       console.log('save place success');
       state.houses = response.payload;
+      authSlice.caseReducers.setToastSuccess(state, { payload: 'Get houses success!', type: 'toast' })
+
+    })
+
+    builder.addCase(getHouses.rejected, (state, response) => {
+      // Set is Logged in to true
+      console.log('save place success');
+      authSlice.caseReducers.setToastError(state, { payload: 'Get houses failed!', type: 'toast' })
+    })
+
+    builder.addCase(getFilteredHouses.fulfilled, (state, response) => {
+      // Set is Logged in to true
+      state.houses = response.payload;
+      authSlice.caseReducers.setToastSuccess(state, { payload: 'Get filtered houses success!', type: 'toast' })
+
+    })
+
+    builder.addCase(getFilteredHouses.rejected, (state) => {
+      // Set is Logged in to true
+      console.log('save place success');
+      authSlice.caseReducers.setToastError(state, { payload: 'Get filtered houses failed!', type: 'toast' })
+    })
+
+    builder.addCase(getMyHouses.fulfilled, (state, response) => {
+      // Set is Logged in to true
+      console.log('save place success');
+      state.myhouses = response.payload;
+      authSlice.caseReducers.setToastSuccess(state, { payload: 'Get my houses success!', type: 'toast' })
+
+    })
+
+    builder.addCase(getMyHouses.rejected, (state, response) => {
+      // Set is Logged in to true
+      console.log('save place success');
+      authSlice.caseReducers.setToastError(state, { payload: 'Get my houses failed!', type: 'toast' })
     })
 
     builder.addCase(getUser.fulfilled, (state, response) => {
@@ -248,6 +327,15 @@ export const authSlice = createSlice({
     builder.addCase(updateRoleOfUser.rejected, (state) => {
       console.log('save role reject')
       authSlice.caseReducers.setToastError(state, { payload: 'Set role failed!', type: 'toast' })
+    })
+
+    builder.addCase(getCities.fulfilled, (state, response) => {
+      authSlice.caseReducers.setToastSuccess(state, { payload: 'Get cities success!', type: 'toast' })
+      state.cities = response.payload ;
+    })
+
+    builder.addCase(getCities.rejected, (state) => {
+      authSlice.caseReducers.setToastError(state, { payload: 'Get cities failed!', type: 'toast' })
     })
 
   },

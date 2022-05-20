@@ -34,7 +34,6 @@ export default function AccountOwner(props: IAccountOwnerProps) {
         <div>
             <HeaderOwner />
             <Houses/>
-            <Map/>
         </div>
     );
 }

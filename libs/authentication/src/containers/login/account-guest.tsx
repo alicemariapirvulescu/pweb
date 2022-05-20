@@ -37,7 +37,6 @@ export default function AccountGuest(props: IAccountGuestProps) {
                     
                 </SplitterPanel>
             </Splitter>
-            <Map/>
         </div>
     );
 }

@@ -8,45 +8,15 @@ export interface LoginResponse {
     token: string
 }
 
-export interface PersonReview {
-    name: string,
-    message: string,
-    average: never
-}
-
-export interface RestaurantResponse{
-    id: number,
-    name: string,
-    description: string,
-    rating: number,
-    category: string,
-    status: string,
-    review: CategoryReview,
-    latitude: number,
-    longitude: number,
-    image: Blob
-}
-
-export interface CategoryReview {
-    food: number,
-    staff: number,
-    location: number,
-    price: number,
-    average: number
-}
-
-export interface RestaurantState {
-    restaurants: RestaurantResponse[],
-    restaurant: RestaurantResponse,
+export interface RefugeeState {
     isLoggedIn: boolean,
     user: LoginResponse | undefined,
-    reviews: PersonReview[],
-    review: CategoryReview,
     toastError: string,
     toastSuccess: string,
-    image: string,
     reservations: BookingRequest[],
     houses: HouseResponse[],
+    myhouses: HouseResponse[],
+    cities: string[]
 }
 
 export interface BookingRequest{

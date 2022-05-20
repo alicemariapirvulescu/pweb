@@ -46,3 +46,11 @@ export interface BookingRequest{
     messageGuest : string,
     numberGuest : number
 }
+
+export interface FilterRequest{
+
+    city: string,
+    numDays : number,
+    numPeople : number
+}
+

@@ -11,23 +11,23 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { HouseResponse } from "../redux/reponses";
-import { getHouses } from '../redux/slice';
+import { getHouses, getMyHouses } from '../redux/slice';
 import Booking from "./booking";
 import './DataViewDemo.css';
 import './styles.scss';
 
-export interface HousesProps {
+export interface MyHousesProps {
 }
 
 
-const Houses = () => {
+const MyHouses = () => {
     let navigate = useNavigate();
     const dispatch = useDispatch();
-    const { houses } = useSelector((state: RootState) => state.auth)
+    const { myhouses } = useSelector((state: RootState) => state.auth)
     const [layout, setLayout] = useState('grid');
 
     useEffect(() => {
-        dispatch(getHouses());
+        dispatch(getMyHouses());
     }, []);
 
     const renderGridItem = (data: HouseResponse) => {
@@ -71,8 +71,8 @@ const Houses = () => {
 
                         <Button style={{ float: 'left' }} icon="pi pi-heart" className="p-button-lg p-button-rounded p-button-danger p-button-text" tooltip="Add to favorites" tooltipOptions={{ position: 'bottom' }} aria-label="Bookmark" />
                         <div className="product-grid-item-bottom " style={{ marginTop: '0rem', marginLeft: "11.5rem", alignContent: 'center !important', justifyContent: 'center !important' }}>
-                            <Booking/>    
-                        </div>
+                        <Button label="Edit" className='mt' icon="pi pi-check"/>
+                   </div>
 
                     </div>
                 </div>
@@ -91,11 +91,11 @@ const Houses = () => {
     return (
         <div className="dataview-demo">
             <div className="card">
-                <DataView value={houses} layout={layout}
+                <DataView value={myhouses} layout={layout}
                     itemTemplate={itemTemplate} />
             </div>
         </div>
     );
 }
 
-export default Houses;
+export default MyHouses;

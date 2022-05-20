@@ -31,7 +31,7 @@ export default function Header(props: IHeaderProps) {
 
     const checkRequests = (e: any) => {
         e.preventDefault();
-        navigate("/reservations");
+        navigate("/bookings");
     }
 
     const addHouseRedirect = (e: any) => {

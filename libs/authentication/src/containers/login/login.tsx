@@ -6,7 +6,6 @@ import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import './styles.scss';
-import './login.css';
 import 'primeicons/primeicons.css';
 
 import { useState } from 'react';

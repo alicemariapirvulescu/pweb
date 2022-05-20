@@ -206,19 +206,19 @@ const NewHouse = () => {
                         <h5 className="add-header" style={{ width: '15rem', marginLeft: '1.5rem' }} >Latitude</h5>
                     </div>
 
-                    <div className='rowC' style={{ width: '32rem' }} >
+                    {/* <div className='rowC' style={{ width: '32rem' }} >
 
                         <InputNumber style={{ width: '16rem' }} inputId="minmaxfraction" value={latitude} onValueChange={(e: any) => setLatitude(e.value)} mode="decimal" minFractionDigits={2} maxFractionDigits={7}
                             onChange={(e: any) => setLatitude(e.target.value)} />
                         <InputNumber style={{ marginLeft: '0.5rem', width: '16rem' }} inputId="minmaxfraction" value={longitude} mode="decimal" minFractionDigits={2} maxFractionDigits={7}
                             onValueChange={(e: any) => setLongitude(e.value)} />
 
-                    </div>
+                    </div> */}
 
-                    <div className='rowC' style={{ width: '32rem', textAlign: 'left' }} >
+                    {/* <div className='rowC' style={{ width: '32rem', textAlign: 'left' }} >
                         <p style={{ width: '16rem' }} className="block add-header" id="phone-help">Set exact latitude of house</p>
                         <p style={{ width: '16rem', marginLeft: '1.5rem' }} className="block add-header" id="phone-help">Set exact longitude of house</p>
-                    </div>
+                    </div> */}
 
 
                     <h5 className="add-header">Description</h5>
@@ -239,7 +239,6 @@ const NewHouse = () => {
                             onSelect={onTemplateSelect} onError={onTemplateClear} onClear={onTemplateClear} maxFileSize={3000000}
                             headerTemplate={headerTemplate} itemTemplate={itemTemplate} emptyTemplate={emptyTemplate}
                             chooseOptions={chooseOptions} uploadOptions={uploadOptions} cancelOptions={cancelOptions} />
-
                     </div>
 
                     <div>

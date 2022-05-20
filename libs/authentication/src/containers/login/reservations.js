@@ -15,22 +15,21 @@ import { Button } from 'primereact/button';
 import { InputNumber } from 'primereact/inputnumber';
 import React, { useEffect, useState } from 'react';
 import { Avatar } from 'primereact/avatar';
-import { authSlice, getReservations } from '../redux/slice';
+import { authSlice, getBookings } from '../redux/slice';
 import { Card } from 'primereact/card';
-import AddReservations from './addReview';
 
 import warning from './icons/warning.svg';
 import './styles.scss';
-import Header from './header';
+import Header from './header-owner';
 
-const Reservations = () => {
+const Bookings = () => {
     let navigate = useNavigate();
     const dispatch = useDispatch();
     const [enableReservations, setEnableReservations] = useState(true);
     const { reservations } = useSelector((state) => state.auth)
 
     useEffect(() => {
-        dispatch(getReservations());
+        dispatch(getBookings());
         console.log(reservations);
 
     }, []);
@@ -164,4 +163,4 @@ const Reservations = () => {
 
     );
 }
-export default Reservations;
+export default Bookings;

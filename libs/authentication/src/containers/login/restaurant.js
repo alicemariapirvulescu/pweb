@@ -11,7 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getRestaurant } from '../redux/slice';
 import CustomizedMap from './customized-map';
 import './DataViewDemo.css';
-import Header from './header';
+import Header from './header-owner';
 import Reservation from './reservation';
 import Reviews from './reviews';
 import './restaurants.css';

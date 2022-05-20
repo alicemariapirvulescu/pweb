@@ -7,8 +7,7 @@ import { MouseEvent } from 'react';
 import { authSlice } from '../redux/slice'
 import { Navigate } from 'react-router-dom';
 import Map from './Map';
-import Restaurants from './restaurants';
-import Header from './header';
+import HeaderGuest from './header-guest';
 import Preferences from './preferences';
 import { Splitter, SplitterPanel } from 'primereact/splitter';
 import Houses from './houses';
@@ -27,7 +26,7 @@ export default function AccountGuest(props: IAccountGuestProps) {
     
     return (
         <div>
-            <Header />
+            <HeaderGuest />
             <Splitter>
                 <SplitterPanel size={15} minSize={10}>
                     <Preferences/>

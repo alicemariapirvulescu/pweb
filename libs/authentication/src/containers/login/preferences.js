@@ -17,7 +17,6 @@ import React, { useEffect, useState } from 'react';
 import { Avatar } from 'primereact/avatar';
 import { authSlice, getPreferences } from '../redux/slice';
 import { Card } from 'primereact/card';
-import AddPreferences from './addReview';
 import { Slider } from 'primereact/slider';
 import { RadioButton } from 'primereact/radiobutton';
 import { Dropdown } from 'primereact/dropdown';

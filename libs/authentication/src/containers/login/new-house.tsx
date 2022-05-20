@@ -1,6 +1,6 @@
 import React, { FormEvent, memo, ReducerAction } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from '../redux/slice'
+import { registerUser, saveHouse } from '../redux/slice'
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
@@ -15,18 +15,19 @@ import { Menubar } from 'primereact/menubar';
 import HeaderLoggedOut from "./header-logged-out";
 import { Toast } from 'primereact/toast';
 import { useRef } from 'react';
-import Header from "./header";
+import Header from "./header-owner";
 import { InputNumber } from 'primereact/inputnumber';
 import { InputTextarea } from "primereact/inputtextarea";
 import { HouseRequest } from "../redux/payloads";
 import { ProgressBar } from 'primereact/progressbar';
 import { Tag } from 'primereact/tag';
+import house from './icons/house.svg';
 import { FileUpload, FileUploadProps, FileUploadRemoveParams } from 'primereact/fileupload';
 
 export interface HomeManagerProps {
 }
 
-const HomeManager = () => {
+const NewHouse = () => {
     let navigate = useNavigate();
     const [city, setCity] = useState('');
     const [description, setDescription] = useState('');
@@ -65,7 +66,7 @@ const HomeManager = () => {
         setTotalSize(0);
     }
 
-    const onTemplateRemove = (file: File, callback : any) => {
+    const onTemplateRemove = (file: File, callback: any) => {
         setTotalSize(totalSize - file.size);
         callback();
     }
@@ -107,6 +108,7 @@ const HomeManager = () => {
         )
     }
 
+
     const chooseOptions = { icon: 'pi pi-fw pi-images', iconOnly: false, className: 'custom-choose-btn p-button-rounded p-button-outlined' };
     const uploadOptions = { icon: 'pi pi-fw pi-cloud-upload', iconOnly: false, className: 'custom-upload-btn p-button-success p-button-rounded p-button-outlined' };
     const cancelOptions = { icon: 'pi pi-fw pi-times', iconOnly: false, className: 'custom-cancel-btn p-button-danger p-button-rounded p-button-outlined' };
@@ -143,14 +145,18 @@ const HomeManager = () => {
             address: address,
             city: city
         }
+        dispatch(saveHouse(housePayload))
         console.log('Add house was called');
-        console.log(housePayload);
     }
+
 
     return (
         <div className="card">
             <Header />
             <Card className="card-add">
+                <div>
+                    <img src={house} width="50 rem" height="50 rem" />
+                </div>
                 <h3 style={{ color: '#6366f1' }}>Add house</h3>
                 <form onSubmit={handleSubmit}>
 
@@ -237,7 +243,7 @@ const HomeManager = () => {
                     </div>
 
                     <div>
-                        <Button style={{ marginTop: '2rem' }} icon="pi pi-home" label="Save" />
+                        <Button style={{ marginTop: '2rem' }} icon="pi pi-home" label="Save"/>
                     </div>
 
                 </form>
@@ -246,4 +252,4 @@ const HomeManager = () => {
 
 }
 
-export default HomeManager
+export default NewHouse

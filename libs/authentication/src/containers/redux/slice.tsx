@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios, { AxiosResponse } from 'axios';
 import { setTimeout } from 'timers/promises';
-import { LoginPayload, RegisterPayload, ReviewPayload, HouseRequest
- } from './payloads';
-import { LoginResponse, RestaurantResponse, CategoryReview,  RestaurantState, PersonReview, ReservationRequest, HouseResponse } from './reponses';
+import {
+  LoginPayload, RegisterPayload, ReviewPayload, HouseRequest
+} from './payloads';
+import { LoginResponse, RestaurantResponse, CategoryReview, RestaurantState, PersonReview, BookingRequest, HouseResponse } from './reponses';
 
 
 export const loginUser = createAsyncThunk(
@@ -12,6 +13,53 @@ export const loginUser = createAsyncThunk(
     try {
       const response: AxiosResponse<LoginResponse> = await axios.post('http://localhost:8080/api/login', payload);
       console.log(response.status);
+      return response.data;
+    }
+    catch (err: any) {
+      console.log('am ajuns aici');
+      return Promise.reject({ message: 'login fail' });
+    }
+
+  }
+)
+
+export const getUser = createAsyncThunk(
+  'auth/loginUserWithGoogle',
+  async (): Promise<LoginResponse> => {
+    try {
+      console.log('Start get user');
+      const authToken = localStorage.getItem('token');
+      const response: AxiosResponse<LoginResponse> = await axios.get('http://localhost:8080/user/me',
+        {
+          headers: {
+            Authorization: 'Bearer ' + authToken //the token is a variable which holds the token
+          }
+        });
+      console.log(" the user is " + response);
+      return response.data;
+    }
+    catch (err: any) {
+      console.log('am ajuns aici');
+      return Promise.reject({ message: 'login fail' });
+    }
+
+  }
+)
+
+export const updateRoleOfUser = createAsyncThunk(
+  'auth/updateRoleOfUser',
+  async (payload: string): Promise<any> => {
+    try {
+      console.log('The user chose the role +' + payload)
+      const authToken = localStorage.getItem('token');
+      console.log("The token is" + authToken);
+      const response: AxiosResponse<any> = await axios.get('http://localhost:8080/refugees/api/dashboard/update-user/' + payload,
+        {
+          headers: {
+            Authorization: 'Bearer ' + authToken //the token is a variable which holds the token
+          }
+        });
+      console.log(" the response is " + response);
       return response.data;
     }
     catch (err: any) {
@@ -36,25 +84,49 @@ export const registerUser = createAsyncThunk(
   }
 )
 
-export const saveReview = createAsyncThunk(
-  'auth/saveReview',
-  async (payload: ReviewPayload): Promise<Number> => {
-    try {
-      const response: AxiosResponse = await axios.post('http://localhost:8080/api/review', payload);
-      return response.status;
-    }
-    catch (err: any) {
-      console.log('am ajuns aici');
-      return Promise.reject({ message: 'add review fail' });
-    }
+export const getBookings = createAsyncThunk(
+  'auth/getReservations',
+  async (): Promise<BookingRequest[]> => {
+    const authToken = localStorage.getItem('token');
+    const response: AxiosResponse<BookingRequest[]> = await axios.get('http://127.0.0.1:5500/apps/mocks/reservations.json',
+      {
+        headers: {
+          Authorization: 'Bearer ' + authToken //the token is a variable which holds the token
+        }
+      });
+    console.log("Get reservations was called")
+    return response.data;
+  }
+
+)
+
+export const getHouses = createAsyncThunk(
+  'auth/getHouses',
+  async (): Promise<HouseResponse[]> => {
+    const authToken = localStorage.getItem('token');
+    const response: AxiosResponse<HouseResponse[]> = await axios.get('http://localhost:8080/refugees/api/dashboard/houses',
+      {
+        headers: {
+          Authorization: 'Bearer ' + authToken //the token is a variable which holds the token
+        }
+      });
+    console.log("Get houses was called");
+    return response.data;
   }
 )
 
-export const savePlace = createAsyncThunk(
+export const saveHouse = createAsyncThunk(
   'auth/addPlace',
   async (payload: HouseRequest): Promise<Number> => {
     try {
-      const response: AxiosResponse = await axios.post('http://localhost:8080/api/review', payload);
+      console.log('adding a new house')
+      const authToken = localStorage.getItem('token');
+      const response: AxiosResponse = await axios.post('http://localhost:8080/refugees/api/dashboard/save-house', payload,
+        {
+          headers: {
+            Authorization: 'Bearer ' + authToken //the token is a variable which holds the token
+          }
+        });
       return response.status;
     }
     catch (err: any) {
@@ -64,57 +136,11 @@ export const savePlace = createAsyncThunk(
   }
 )
 
-export const getRestaurants = createAsyncThunk(
-  'auth/getRestaurants',
-  async (): Promise<RestaurantResponse[]> => {
-    const response: AxiosResponse<RestaurantResponse[]> = await axios.get('http://localhost:8080/api/restaurant');
-    console.log("Get restaurants was called")
-    return response.data;
-  }
-)
-
-export const getReservations = createAsyncThunk(
-  'auth/getReservations',
-  async (): Promise<ReservationRequest[]> => {
-    const response: AxiosResponse<ReservationRequest[]> = await axios.get('http://127.0.0.1:5500/apps/mocks/reservations.json');
-    console.log("Get reservations was called")
-    return response.data;
-  }
-)
-
-export const getHouses = createAsyncThunk(
-  'auth/getHouses',
-  async (): Promise<HouseResponse[]> => {
-    const response: AxiosResponse<HouseResponse[]> = await axios.get('http://127.0.0.1:5500/apps/mocks/houses.json');
-    console.log("Get houses was called");
-    return response.data;
-  }
-)
-
-
-export const getReviews = createAsyncThunk(
-  'auth/getReviews',
-  async (id: string | undefined): Promise<PersonReview[]> => {
-    const response: AxiosResponse<PersonReview[]> = await axios.get('http://localhost:8080/api/review/' + id);
-    console.log("Get reviews was called" + id)
-    return response.data;
-  }
-)
-
-export const getRestaurant = createAsyncThunk(
-  'auth/getRestaurant',
-  async (id: string | undefined): Promise<RestaurantResponse> => {
-    console.log("Get restaurant was called with params: " + id);
-    const response: AxiosResponse<RestaurantResponse> = await axios.get('http://localhost:8080/api/restaurant/' + id);
-    console.log(response.data);
-    return response.data;
-  }
-)
 
 const initialState: RestaurantState =
 {
   restaurants: [], restaurant: {} as RestaurantResponse, isLoggedIn: false,
-  user: {} as LoginResponse, reviews: [], review: {} as CategoryReview, toastError: '', toastSuccess: '',
+  user: undefined, reviews: [], review: {} as CategoryReview, toastError: '', toastSuccess: '',
   image: '', reservations: [], houses: []
 }
 
@@ -133,7 +159,9 @@ export const authSlice = createSlice({
     },
     setToastSuccess(state, action: PayloadAction<string>) {
       state.toastSuccess = action.payload;
-
+    },
+    setUser(state, action: PayloadAction<RestaurantState['user']>) {
+      state.user = action.payload;
     },
     setToastError(state, action: PayloadAction<string>) {
       state.toastError = action.payload;
@@ -143,11 +171,6 @@ export const authSlice = createSlice({
   // standard reducer logic, with auto-generated action types per reducer
   extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
-    builder.addCase(getRestaurants.fulfilled, (state, response) => {
-      // Add restaurants to the slice array
-      state.restaurants = response.payload;
-      console.log(state.restaurants);
-    })
 
     builder.addCase(loginUser.fulfilled, (state, response) => {
       // Set is Logged in to true
@@ -178,35 +201,22 @@ export const authSlice = createSlice({
       authSlice.caseReducers.setToastError(state, { payload: 'Register failed!', type: 'toast' })
     })
 
-    builder.addCase(getRestaurant.fulfilled, (state, response) => {
-      // Add restaurants to the slice array
-      state.restaurant = response.payload;
-      state.review = response.payload.review;
-      console.log(state.restaurant);
-    })
-
-    builder.addCase(getReviews.fulfilled, (state, response) => {
-      // Add restaurants to the slice array
-      state.reviews = response.payload;
-      console.log(state.reviews);
-    })
-    
-    builder.addCase(getReservations.fulfilled, (state, response) => {
+    builder.addCase(getBookings.fulfilled, (state, response) => {
       // Add reservations to the slice array
       state.reservations = response.payload;
       console.log(state.reservations);
-    }) 
-    
-    builder.addCase(savePlace.fulfilled, (state, response) => {
-      // Set is Logged in to true
-      console.log('save place success')
-      authSlice.caseReducers.setToastSuccess(state, { payload: 'Add place successful!', type: 'toast' })
     })
 
-    builder.addCase(savePlace.rejected, (state) => {
+    builder.addCase(saveHouse.fulfilled, (state, response) => {
+      // Set is Logged in to true
+      console.log('save place success')
+      authSlice.caseReducers.setToastSuccess(state, { payload: 'Add accomodation successful!', type: 'toast' })
+    })
+
+    builder.addCase(saveHouse.rejected, (state) => {
       // Set is Logged in to false
       console.log('save place reject')
-      authSlice.caseReducers.setToastError(state, { payload: 'Add place failed!', type: 'toast' })
+      authSlice.caseReducers.setToastError(state, { payload: 'Add accomodation failed!', type: 'toast' })
 
     })
 
@@ -215,6 +225,31 @@ export const authSlice = createSlice({
       console.log('save place success');
       state.houses = response.payload;
     })
+
+    builder.addCase(getUser.fulfilled, (state, response) => {
+      // Set is Logged in to true
+      state.user = response.payload
+      localStorage.setItem("token", state.user.token);
+
+      authSlice.caseReducers.setToastSuccess(state, { payload: 'Login with google success!', type: 'toast' })
+    })
+
+    builder.addCase(getUser.rejected, (state, response) => {
+      // Set is Logged in to true
+      authSlice.caseReducers.setToastError(state, { payload: 'Login with google failed!', type: 'toast' })
+    })
+
+
+    builder.addCase(updateRoleOfUser.fulfilled, (state) => {
+      console.log('save role reject')
+      authSlice.caseReducers.setToastSuccess(state, { payload: 'Set role success!', type: 'toast' })
+    })
+
+    builder.addCase(updateRoleOfUser.rejected, (state) => {
+      console.log('save role reject')
+      authSlice.caseReducers.setToastError(state, { payload: 'Set role failed!', type: 'toast' })
+    })
+
   },
 
 })

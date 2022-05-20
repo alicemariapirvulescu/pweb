@@ -93,7 +93,7 @@ const Register = () => {
         <div className="card">
             <HeaderLoggedOut />
             <Card className="card-personalised-register">
-                <h1 className="space-label">food-picker</h1>
+                <h1 className="space-label">refugee-host</h1>
                 <form onSubmit={handleSubmit}>
 
                     <div className="space-label">

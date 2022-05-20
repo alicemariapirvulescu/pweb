@@ -30,12 +30,6 @@ const Houses = () => {
         dispatch(getHouses());
     }, []);
 
-    const handleMoreDetails = (e: React.MouseEvent<HTMLButtonElement>, data: HouseResponse) => {
-        e.preventDefault();
-        console.log(e.target);
-        navigate("/house/" + data.id);
-    }
-
     const renderGridItem = (data: HouseResponse) => {
         return (
             <div className="col-12 md:col-4">

@@ -1,20 +1,16 @@
 import Login from 'libs/authentication/src/containers/login/login'
-import Account from 'libs/authentication/src/containers/login/account'
+import AccountGuest from 'libs/authentication/src/containers/login/account-guest'
+import AccountOwner from 'libs/authentication/src/containers/login/account-owner'
 import Register from 'libs/authentication/src/containers/login/register'
 import Restaurant from 'libs/authentication/src/containers/login/restaurant'
-import HomeManager from 'libs/authentication/src/containers/login/new-house'
-import Reservations from 'libs/authentication/src/containers/login/reservations'
-import AccountGuest from 'libs/authentication/src/containers/login/account-guest'
+import NewHouse from 'libs/authentication/src/containers/login/new-house'
+import Bookings from 'libs/authentication/src/containers/login/reservations'
+import SelectRole from 'libs/authentication/src/containers/login/select-role'
 import OAuth2RedirectHandler from 'libs/authentication/src/containers/oauth2/OauthRedirect'
 const routes = [
     {
         path: "/",
         component: <Login />,
-    },
-    
-    {
-        path: "/restaurants",
-        component: <Account />
     },
 
     {
@@ -23,28 +19,33 @@ const routes = [
     },
 
     {
-        path: "/restaurant/:id",
-        component: <Restaurant />
+        path: "/new-house",
+        component: <NewHouse />
     },
 
     {
-        path: "/manager",
-        component: <HomeManager />
+        path: "/bookings",
+        component: <Bookings />
     },
 
     {
-        path: "/reservations",
-        component: <Reservations />
-    },
-
-    {
-        path: "/houses-guest",
+        path: "/account-guest",
         component: <AccountGuest />
     },
+
+    {
+        path: "/account-owner",
+        component: <AccountOwner />
+    },
+
     {
         path: "/oauth2/redirect",
         component: <OAuth2RedirectHandler />
     },
+    {
+        path: "/select-role",
+        component: <SelectRole />
+    }
 
 
 ]

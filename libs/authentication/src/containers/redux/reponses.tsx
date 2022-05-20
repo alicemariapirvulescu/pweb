@@ -3,9 +3,9 @@ import internal from "stream"
 
 export interface LoginResponse {
     username: string,
-    bearerToken: string,
     email: string,
-    role: string
+    role: string,
+    token: string
 }
 
 export interface PersonReview {
@@ -39,17 +39,17 @@ export interface RestaurantState {
     restaurants: RestaurantResponse[],
     restaurant: RestaurantResponse,
     isLoggedIn: boolean,
-    user: LoginResponse,
+    user: LoginResponse | undefined,
     reviews: PersonReview[],
     review: CategoryReview,
     toastError: string,
     toastSuccess: string,
     image: string,
-    reservations: ReservationRequest[],
+    reservations: BookingRequest[],
     houses: HouseResponse[],
 }
 
-export interface ReservationRequest{
+export interface BookingRequest{
     nameHouse: string,
     numPeople: number,
     startPeriod: Date,

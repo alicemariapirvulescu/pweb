@@ -1,66 +1,78 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component, useEffect, useState } from 'react';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom'
 import { authSlice } from '../redux/slice'
+import { getUser } from '../redux/slice';
 import {
     useLocation,
     useParams
-  } from "react-router-dom";
+} from "react-router-dom";
 
-  export const withRouter = (Component) =>  {
-    function ComponentWithRouterProp(props) {
-      let location = useLocation();
-      let params = useParams();
-      return (
-        <Component
-          {...props}
-          router={{ location, params }}
-        />
-      );
-    }
-    return ComponentWithRouterProp;
-  }
-class OAuth2RedirectHandler extends Component {
-    getUrlParameter(name) {
+import axios from 'axios';
+
+
+const OAuth2RedirectHandler = () => {
+    const location = useLocation();
+    const params = useParams();
+    const dispatch = useDispatch();
+
+    const [returnPath, setReturnPath] = useState(<></>)
+
+    const getUrlParameter = (name) => {
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
         var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
 
-        console.log(this.props)
-        var results = regex.exec(this.props.router.location.search);
+        var results = regex.exec(location.search);
         return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
     };
 
-    
-    
-
-    render() {        
-        const token = this.getUrlParameter('token');
-
-        if(token) {
+     useEffect( async () => {
+        let pathToNavigate = <></>
+        const token = getUrlParameter('token');
+        if (token) {
             localStorage.setItem("token", token);
-            this.props.setIsLoggedIn();
-            return <Navigate to={{
-                pathname: "/restaurants",
-            }}/>; 
-        } else {
-            return <Navigate to={{
-                pathname: "/login",
-            }}/>; 
+            dispatch(authSlice.actions.setIsLoggedIn())
+            dispatch(getUser())
+            try {
+                console.log('Started logging with google')
+                const authToken = localStorage.getItem('token');
+                const response = await axios.get('http://localhost:8080/user/me',
+                  {
+                    headers: {
+                      Authorization: 'Bearer ' + authToken //the token is a variable which holds the token
+                    }
+                  });
+                const user = response.data;
+                const role = user.role;
+                console.log(" the user is " + role);
+
+                if (role == "ROLE_USER") {
+                    pathToNavigate = <Navigate to={{ pathname: "/select-role" }} />;
+                }
+                else {
+                    if (role === 'ROLE_GUEST') {
+                        pathToNavigate = <Navigate to={{ pathname: "/account-guest" }} />;
+                    }
+                    else {
+                        pathToNavigate = <Navigate to={{ pathname: "/account-owner" }} />;
+                    }
+    
+                }
+              }
+              catch (err) {
+                console.log('am ajuns aici');
+              }
+         
         }
-    }
+        console.log(pathToNavigate)
+        setReturnPath(pathToNavigate)
+    },[]);
+
+
+    return returnPath;
+
+
 }
 
-function mapStateToProps(state, ownProps) {
-    console.log(ownProps)
-    const { auth } = state
-    return { ...ownProps, isLoggedIn: auth.isLoggedIn }
-}
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-      setIsLoggedIn: () => dispatch(authSlice.actions.setIsLoggedIn()),
-      dispatch,
-    }
-  }
-  
-  export default withRouter(connect(mapStateToProps,mapDispatchToProps)(OAuth2RedirectHandler))
+export default OAuth2RedirectHandler;

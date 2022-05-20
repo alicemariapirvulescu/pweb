@@ -1,11 +1,12 @@
 import React, { FormEvent, memo, ReducerAction } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser, registerUser, getRestaurants } from '../redux/slice'
+import { loginUser, registerUser } from '../redux/slice'
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import './styles.scss';
+import './login.css';
 import 'primeicons/primeicons.css';
 
 import { useState } from 'react';
@@ -15,6 +16,8 @@ import { Menubar } from 'primereact/menubar';
 import HeaderLoggedOut from "./header-logged-out";
 import { Toast } from 'primereact/toast';
 import { useRef } from 'react';
+import house from './icons/house.svg';
+import googleLogo from './icons/google-logo.png';
 
 export const OAUTH2_REDIRECT_URI = 'http://localhost:4200/oauth2/redirect'
 export const API_BASE_URL = 'http://localhost:8080';
@@ -29,7 +32,7 @@ const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const { isLoggedIn } = useSelector((state: RootState) => state.auth)
+    const { isLoggedIn, user } = useSelector((state: RootState) => state.auth)
 
     const dispatch = useDispatch()
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -40,18 +43,25 @@ const Login = () => {
 
     if (isLoggedIn) {
         console.log("Navigate to account")
-        return <Navigate to="/houses-guest" replace />;
+        if (user?.role == 'ROLE_GUEST') {
+            return <Navigate to="/account-guest" replace />;
+        }
+        else return <Navigate to="/account-owner" replace />;
     }
 
     return (
         <div className="card">
             <HeaderLoggedOut />
             <Card className="card-personalised">
-                <h1 className="space-label">food-picker</h1>
+                <div>
+                    <img src={house} width="50 rem" height="50 rem" />
+                </div>
+
+                <h1 className="space-label">refugee-host</h1>
                 <form onSubmit={handleSubmit}>
 
                     <div className="space-label">
-                        <span className="p-float-label">
+                        <span className="p-float-label" style={{ marginTop: '2rem' }}>
                             <InputText value={username} id="username" className='width-label' onChange={e => setUsername(e.target.value)} required />
                             <label htmlFor="username">Username</label> </span>
                     </div>
@@ -61,16 +71,21 @@ const Login = () => {
                             <Password value={password} onChange={(e) => setPassword(e.target.value)} toggleMask feedback={false} required />
                             <label htmlFor="password">Password</label> </span>
                     </div>
-                    <div>
+
+                    <div className="social-login">
+                        <a className="google" href={GOOGLE_AUTH_URL} >
+                            <img width="40rem" height="40rem" src={googleLogo} alt="Google" />
+                            <div style={{ fontSize: "medium" }}> Log in with Google </div>
+                        </a>
+                    </div>
+
+                    <div style={{ marginTop: '1rem' }}>
                         <Button icon="pi pi-sign-in" label="Login" />
                     </div>
 
                 </form>
             </Card>
-            <div className="social-login">
-                <a className="btn btn-block social-btn google" href={GOOGLE_AUTH_URL}>
-                   Log in with Google </a>
-            </div>
+
         </div>)
 
 }

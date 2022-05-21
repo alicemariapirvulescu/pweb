@@ -15,6 +15,7 @@ import { getHouses } from '../redux/slice';
 import Booking from "./booking";
 import './DataViewDemo.css';
 import './styles.scss';
+import './refugees.css';
 
 export interface HousesProps {
 }
@@ -48,7 +49,7 @@ const Houses = () => {
 
                         <div className='rowC'>
                             <div style={{width : "30%"}}>
-                                <div className='rowC'>
+                                <div className='rowC' style={{width : "100%"}}>
                                     <i className="pi pi-map-marker product-category-icon"></i>
                                     <div >{data.city}</div>
                                 </div>

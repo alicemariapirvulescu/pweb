@@ -7,6 +7,7 @@ import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import './styles.scss';
 import 'primeicons/primeicons.css';
+import './refugees.css';
 
 import { useState } from 'react';
 import { RootState } from "apps/mycontentful/src/app/reducers";
@@ -201,10 +202,10 @@ const NewHouse = () => {
                         <p style={{ width: '16rem', marginLeft: '1.5rem' }} className="block add-header" id="phone-help">Number of days</p>
                     </div>
 
-                    <div className='rowC' style={{ width: '32rem', textAlign: 'left' }} >
+                    {/* <div className='rowC' style={{ width: '32rem', textAlign: 'left' }} >
                         <h5 className="add-header" style={{ width: '15rem' }}>Longitude</h5>
                         <h5 className="add-header" style={{ width: '15rem', marginLeft: '1.5rem' }} >Latitude</h5>
-                    </div>
+                    </div> */}
 
                     {/* <div className='rowC' style={{ width: '32rem' }} >
 

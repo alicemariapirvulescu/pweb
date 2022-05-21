@@ -233,4 +233,10 @@ div.bg[disabled]
     width: 50px;
 }
 
-.rowC{display:flex !important; flex-direction:row;}
+.rowC{
+    display:inline-flex !important;
+     flex-direction:row;}
+
+.if{
+    display: inline-flex;
+}

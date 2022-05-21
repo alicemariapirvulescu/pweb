@@ -20,3 +20,33 @@ export interface ReviewPayload {
     message: string,
     username: string
 }
+
+export interface HouseRequest{
+    description: string,
+    phone: string,
+    latitude: number,
+    longitude: number,
+    capacity: number,
+    bookingPeriod: number,
+    image: string,
+    name: string,
+    address: string,
+    city: string
+}
+
+export interface BookingRequest{
+
+    startDate: Date,
+    endDate: Date,
+    city: string,
+    phone: string,
+    capacity: number
+}
+
+export interface FilterRequest{
+
+    city: string,
+    numDays : number,
+    numPeople : number
+}
+

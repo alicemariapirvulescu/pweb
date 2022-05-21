@@ -15,58 +15,64 @@ import { Button } from 'primereact/button';
 import { InputNumber } from 'primereact/inputnumber';
 import React, { useEffect, useState } from 'react';
 import { Avatar } from 'primereact/avatar';
-import { authSlice, getPreferences } from '../redux/slice';
+import { getCities, getHouses, getFilteredHouses } from '../redux/slice';
 import { Card } from 'primereact/card';
-import AddPreferences from './addReview';
 import { Slider } from 'primereact/slider';
+import { RadioButton } from 'primereact/radiobutton';
+import { Dropdown } from 'primereact/dropdown';
+import { Divider } from 'primereact/divider';
 
 import './styles.scss';
 
 const Preferences = () => {
     const dispatch = useDispatch();
-    const [distanceValue, setDistanceValue] = useState(10);
-    const [foodValue, setFoodValue] = useState(50);
-    const [staffValue, setStaffValue] = useState(50);
-    const [placeValue, SetPlaceValue] = useState(50);
-    const [priceValue, setPriceValue] = useState(50);
 
+    const [city, setCity] = useState('');
+    const [numberOfDays, setNumberOfDays] = useState();
+    const [numberOfPeople, setNumberOfPeople] = useState();
+    const { cities } = useSelector((state) => state.auth)
 
-    const { id } = useParams();
+    useEffect(() => {
+        dispatch(getCities());
+        console.log(cities);
+    }, []);
 
-    // useEffect(() => {
-    //     if (id) {
-    //         dispatch(getPreferences(id));
-    //     }
+    const onApply = (e) => {
+        dispatch(getFilteredHouses({city: city, numDays: numberOfDays, numPeople:numberOfPeople}));
+    }
 
-    //     console.log(preferences);
+    const onClear = (e) => {
+        dispatch(getHouses());
+    }
 
-    // }, []);
-
+    const onCityChange = (e) => {
+        setCity(e.value);
+    }
 
     return (
-        <div  style={{ marginLeft: '2rem', marginRight: '2rem' ,
-        justifyContent: 'center'}}>
+        <div style={{
+            marginLeft: '2rem', marginRight: '2rem',
+            justifyContent: 'center'
+        }}>
 
-            <h4> Select preferences </h4>
+            <h4 style={{ marginTop: '2rem' }}> Select preferences </h4>
+            <Divider />
+            <h5 style={{ marginTop: '1rem' }}> City:</h5>
+            <Dropdown style={{ width: '16rem' }} value={city} options={cities} onChange={onCityChange} placeholder="Select a City" required/>
 
-            <h5 style={{marginTop:'5rem'}}> Food: {foodValue}</h5>
-            <Slider value={foodValue} className='slider' onChange={(e) => setFoodValue(e.value)} />
+            <h5 style={{ marginTop: '1rem' }}> Number of days:</h5>
+            <InputNumber inputId="minmax-buttons" value={numberOfPeople} onValueChange={(e) => setNumberOfPeople(e.value)} mode="decimal" showButtons min={0} max={100}
+                placeholder={'Person number'} required />
 
-            <h5 className=' mt1'> Staff stars: {staffValue } </h5>
-            <Slider value={staffValue} className='slider' onChange={(e) => setStaffValue(e.value)} />
+            <h5 style={{ marginTop: '1rem' }}> Number of people:</h5>
+            <InputNumber inputId="minmax-buttons" value={numberOfDays} onValueChange={(e) => setNumberOfDays(e.value)} mode="decimal" showButtons min={0} max={100}
+                placeholder={'Person number'} required />
 
-            <h5 className=' mt1'> Place stars: {placeValue } </h5>
-            <Slider value={placeValue} className='slider' onChange={(e) => SetPlaceValue(e.value)} />
+            <h5 style={{ marginTop: '1rem' }}></h5>
+            <Button style={{ marginTop: '1rem', marginLeft: '4.5rem' }} label="Apply" icon='pi pi-search-plus' onClick={() => onApply()} />
 
-            <h5 className=' mt1'> Price stars: {priceValue } </h5>
-            <Slider value={priceValue} className='slider' onChange={(e) => setPriceValue(e.value)} />
-
-            <h5 className=' mt1'> Choose distance: {distanceValue} km</h5>
-            <Slider value={distanceValue} className='slider' onChange={(e) => setDistanceValue(e.value)} step={0.5}/>
-
-            <Button label="Apply" icon='pi pi-sort-alt' style={{ marginTop: '60px', alignContent: 'center', justifyContent: 'center',
-            position:'relative', left:'25%' }}
-             onClick={() => onClick()} />
+            <h5 style={{ marginTop: '1rem' }}></h5>
+            <Button style={{ marginTop: '1rem', marginLeft: '4.5rem' }} label="Clear" icon='pi pi-ban' onClick={() => onClear()} />
 
         </div>
     );

@@ -11,7 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getRestaurant } from '../redux/slice';
 import CustomizedMap from './customized-map';
 import './DataViewDemo.css';
-import Header from './header';
+import Header from './header-owner';
 import Reservation from './reservation';
 import Reviews from './reviews';
 import './restaurants.css';
@@ -93,7 +93,7 @@ const Restaurant = () => {
             <CustomizedMap />
 
             <Card className="restaurant-card" title={top} subTitle={restaurant.category} footer={footer} header={header}>
-                <p className="m-0" style={{ lineHeight: '1.5' }}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam.</p> <br />
+                <p className="m-0" style={{ lineHeight: '1.5' }}> {restaurant.description}</p> <br />
 
                 <div className='rowC'>
                     <div>  Food <b>{round(review.food,2)}/5 &nbsp;</b>  </div>

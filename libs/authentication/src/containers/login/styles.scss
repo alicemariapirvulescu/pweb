@@ -3,11 +3,11 @@
 }
 
 .width-label {
-    width: 14.7rem !important;
+    width: 20rem !important;
 }
 
 .p-password-input {
-    width: 14.7rem !important;
+    width: 20rem !important;
 }
 
 .card-personalised {
@@ -36,14 +36,6 @@
     background: hsl(106, 88%, 60%);
 }
 
-.logout-button{
-    margin-left: 1rem;
-}
-
-.account-button{
-    margin-left: 20rem;
-}
-
 .image-wrapper{
     width: 20rem;
     height: 20rem;
@@ -54,15 +46,65 @@
     margin-bottom: 1rem;
 }
 
+.small-image-wrapper{
+    width: 15rem;
+    height: 10rem;
+    overflow: hidden;
+    background-size: cover;
+    margin-top: 0rem;
+    margin-bottom: 4rem;
+    margin-left:1rem;
+    border-radius: 6px;
+}
+
+
 .restaurant-card{
     margin-top: 0rem;
     margin-left: 2rem;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     float: left;
-    transform: translateY(-65rem);
+    transform: translateY(-62rem);
     width: 32em;
     background-color: #f8f9fa;
     height: 47em;
+}
+
+.card-add {
+    background: #adadad1f;
+    box-shadow: 0 2px 1px -1px rgba(253, 250, 250, 0.2), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%);
+    border-radius: 6px;
+    width: min-content;
+    text-align: center;
+    margin:auto;
+    margin-top: 2%;
+}
+
+.warning {
+    background: #f1af4bcb;
+    box-shadow: 0 2px 1px -1px rgba(253, 250, 250, 0.2), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%);
+    border-radius: 6px;
+    width: 40rem;
+    text-align: center;
+    margin-top: 0%;
+}
+
+
+.add-header {
+    float: left; 
+    clear: both;
+}
+
+.photo {
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    width: 32rem;
+    margin-top: 4rem;
+}
+
+
+.p-divider{
+    border-bottom: 1px solid #c7cdd1;
 }
 
 .reservation-card{
@@ -92,10 +134,10 @@
 }
 
 .text-header{
-    font-size: 2rem !important;
+    font-size: 1.5rem !important;
     font-family: Arial, Helvetica, sans-serif;
     margin-left: 5rem;
-    margin-top: -3rem;
+    margin-top: -4rem;
 }
 
 .mt{

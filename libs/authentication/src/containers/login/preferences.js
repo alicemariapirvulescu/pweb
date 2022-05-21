@@ -23,6 +23,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { Divider } from 'primereact/divider';
 
 import './styles.scss';
+import './refugees.css';
 
 const Preferences = () => {
     const dispatch = useDispatch();

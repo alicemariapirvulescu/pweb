@@ -15,6 +15,7 @@ import { getHouses, getMyHouses } from '../redux/slice';
 import Booking from "./booking";
 import './DataViewDemo.css';
 import './styles.scss';
+import './refugees.css';
 
 export interface MyHousesProps {
 }

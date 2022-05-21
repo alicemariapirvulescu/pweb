@@ -10,6 +10,7 @@ import Map from './Map';
 import HeaderOwner from './header-owner';
 import Houses from './houses';
 import { Splitter, SplitterPanel } from 'primereact/splitter';
+import './refugees.css';
 
 export interface IAccountOwnerProps {
 }

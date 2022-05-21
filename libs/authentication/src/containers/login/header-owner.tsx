@@ -31,12 +31,17 @@ export default function Header(props: IHeaderProps) {
 
     const checkRequests = (e: any) => {
         e.preventDefault();
-        navigate("/bookings");
+        navigate("/bookings-owner");
     }
 
     const addHouseRedirect = (e: any) => {
         e.preventDefault();
         navigate("/new-house");
+    }
+
+    const housesRedirect = (e: any) => {
+        e.preventDefault();
+        navigate("/account-owner");
     }
 
 
@@ -52,9 +57,9 @@ export default function Header(props: IHeaderProps) {
     const end =
         <div>
             <div className='rowC'>
-                <Button style={{ marginRight: "0.5rem" }} type="button" label="Add house" icon="pi pi-home" className="p-button-help" badgeClassName="p-badge-danger" onClick={addHouseRedirect} />
+                <Button style={{ marginRight: "0.5rem" }} type="button" label="Add house" icon="pi pi-plus-circle" className="p-button-help" badgeClassName="p-badge-danger" onClick={addHouseRedirect} />
                 <Button style={{ marginRight: "0.5rem" }} type="button" label="Requests" icon="pi pi-users" className="p-button-warning" badge="8" badgeClassName="p-badge-danger" onClick={checkRequests} />
-                <Button style={{ marginRight: "0.5rem" }} className="account-button" label="Account" icon="pi pi-user" onClick={handleLogout} />
+                <Button style={{ marginRight: "0.5rem" }} className="account-button" label="My houses" icon="pi pi-home" onClick={housesRedirect} />
                 <Button style={{ marginRight: "0.5rem" }} className="logout-button" label="Logout" icon="pi pi-sign-out" onClick={handleLogout} />
             </div>
         </div>

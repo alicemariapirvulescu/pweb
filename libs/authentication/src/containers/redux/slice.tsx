@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios, { AxiosResponse } from 'axios';
-import { LoginPayload, RegisterPayload, HouseRequest, FilterRequest } from './payloads';
-import { LoginResponse, RefugeeState, BookingRequest,BookingResponse, HouseResponse } from './reponses';
+import { LoginPayload, RegisterPayload, HouseRequest, NewBookingRequest, FilterRequest, BookingUpdateRequest } from './payloads';
+import { LoginResponse, RefugeeState, BookingRequest, BookingResponse, HouseResponse } from './reponses';
 
 
 export const loginUser = createAsyncThunk(
@@ -16,7 +16,6 @@ export const loginUser = createAsyncThunk(
       console.log('am ajuns aici');
       return Promise.reject({ message: 'login fail' });
     }
-
   }
 )
 
@@ -67,6 +66,50 @@ export const updateRoleOfUser = createAsyncThunk(
   }
 )
 
+export const updateReservationRequest = createAsyncThunk(
+  'auth/updateReservationRequest',
+  async (payload: BookingUpdateRequest): Promise<any> => {
+    try {
+      const authToken = localStorage.getItem('token');
+      console.log("The token is" + authToken);
+      const response: AxiosResponse<any> = await axios.post("http://localhost:8080/refugees/api/dashboard/update-status", payload,
+        {
+          headers: {
+            Authorization: 'Bearer ' + authToken //the token is a variable which holds the token
+          }
+        });
+      console.log(" the response is " + response);
+      return response.data;
+    }
+    catch (err: any) {
+      console.log('am ajuns aici');
+      return Promise.reject({ message: 'login fail' });
+    }
+
+  }
+)
+
+export const createNewBooking = createAsyncThunk(
+  'auth/createNewBooking',
+  async (payload: NewBookingRequest): Promise<any> => {
+    try {
+      const authToken = localStorage.getItem('token');
+      const response: AxiosResponse<any> = await axios.post("http://localhost:8080/refugees/api/dashboard/save-booking", payload,
+        {
+          headers: {
+            Authorization: 'Bearer ' + authToken //the token is a variable which holds the token
+          }
+        });
+      console.log(" the response is " + response);
+      return response.data;
+    }
+    catch (err: any) {
+      return Promise.reject({ message: 'login fail' });
+    }
+
+  }
+)
+
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
   async (payload: RegisterPayload): Promise<Number> => {
@@ -97,6 +140,22 @@ export const getBookings = createAsyncThunk(
 
 )
 
+export const getHouse = createAsyncThunk(
+  'auth/getHouse',
+  async (payload: number): Promise<HouseResponse> => {
+    const authToken = localStorage.getItem('token');
+    const response: AxiosResponse<HouseResponse> = await axios.get('http://localhost:8080/refugees/api/dashboard/house/' + payload,
+      {
+        headers: {
+          Authorization: 'Bearer ' + authToken //the token is a variable which holds the token
+        }
+      });
+    console.log("Get house was called")
+    return response.data;
+  }
+
+)
+
 export const getHouses = createAsyncThunk(
   'auth/getHouses',
   async (): Promise<HouseResponse[]> => {
@@ -117,7 +176,7 @@ export const getFilteredHouses = createAsyncThunk(
   async (payload: FilterRequest): Promise<HouseResponse[]> => {
     const authToken = localStorage.getItem('token');
     const response: AxiosResponse<HouseResponse[]> = await axios.post('http://localhost:8080/refugees/api/dashboard/houses/filtered',
-    payload,
+      payload,
       {
         headers: {
           Authorization: 'Bearer ' + authToken //the token is a variable which holds the token
@@ -142,7 +201,6 @@ export const getCities = createAsyncThunk(
     return response.data;
   }
 )
-
 
 export const getMyHouses = createAsyncThunk(
   'auth/myHouses',
@@ -183,9 +241,10 @@ export const saveHouse = createAsyncThunk(
 
 const initialState: RefugeeState =
 {
-  isLoggedIn: false, user: undefined,
+  isLoggedIn: false, user: {username: '', email: '', role: '', token: ''},
   toastError: '', toastSuccess: '',
-  houses: [], myhouses: [], cities: [''],
+  houses: [], myhouses: [], house: undefined,
+  cities: [''],
   houseId: 0, acceptedReservations: [], pendingReservations: []
 }
 
@@ -338,11 +397,37 @@ export const authSlice = createSlice({
 
     builder.addCase(getCities.fulfilled, (state, response) => {
       authSlice.caseReducers.setToastSuccess(state, { payload: 'Get cities success!', type: 'toast' })
-      state.cities = response.payload ;
+      state.cities = response.payload;
     })
 
     builder.addCase(getCities.rejected, (state) => {
       authSlice.caseReducers.setToastError(state, { payload: 'Get cities failed!', type: 'toast' })
+    }),
+
+      builder.addCase(updateReservationRequest.fulfilled, (state, response) => {
+        authSlice.caseReducers.setToastSuccess(state, { payload: 'Update reservation success!', type: 'toast' })
+        state.cities = response.payload;
+      })
+
+    builder.addCase(updateReservationRequest.rejected, (state) => {
+      authSlice.caseReducers.setToastError(state, { payload: 'Update reservation failed!', type: 'toast' })
+    }),
+
+      builder.addCase(getHouse.fulfilled, (state, response) => {
+        authSlice.caseReducers.setToastSuccess(state, { payload: 'Get house success!', type: 'toast' })
+        state.house = response.payload;
+      })
+
+    builder.addCase(getHouse.rejected, (state) => {
+      authSlice.caseReducers.setToastError(state, { payload: 'Get house failed!', type: 'toast' })
+    })
+    
+    builder.addCase(createNewBooking.fulfilled, (state, response) => {
+        authSlice.caseReducers.setToastSuccess(state, { payload: 'Create new booking request success!', type: 'toast' })
+      })
+
+    builder.addCase(createNewBooking.rejected, (state) => {
+      authSlice.caseReducers.setToastError(state, { payload: 'Create new booking request failed!', type: 'toast' })
     })
 
   },

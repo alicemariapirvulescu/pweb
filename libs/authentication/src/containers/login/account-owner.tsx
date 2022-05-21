@@ -8,7 +8,7 @@ import { authSlice } from '../redux/slice'
 import { Navigate } from 'react-router-dom';
 import Map from './Map';
 import HeaderOwner from './header-owner';
-import Houses from './houses';
+import MyHouses from './my-houses';
 import { Splitter, SplitterPanel } from 'primereact/splitter';
 import './refugees.css';
 
@@ -34,7 +34,7 @@ export default function AccountOwner(props: IAccountOwnerProps) {
     return (
         <div>
             <HeaderOwner />
-            <Houses/>
+            <MyHouses/>
         </div>
     );
 }

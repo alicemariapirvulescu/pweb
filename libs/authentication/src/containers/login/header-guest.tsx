@@ -26,12 +26,16 @@ export default function Header(props: IHeaderProps) {
     const handleLogout = (e: any) => {
         e.preventDefault();
         dispatch(authSlice.actions.logout());
+    }
 
+    const handleHouses = (e: any) => {
+        e.preventDefault();
+        navigate("/account-guest");
     }
 
     const checkRequests = (e: any) => {
         e.preventDefault();
-        navigate("/bookings");
+        navigate("/bookings-guest");
     }
 
 
@@ -48,7 +52,7 @@ export default function Header(props: IHeaderProps) {
         <div>
             <div className='rowC'>
                 <Button style={{ marginRight: "0.5rem" }} type="button" label="Requests" icon="pi pi-users" className="p-button-warning" badge="8" badgeClassName="p-badge-danger" onClick={checkRequests} />
-                <Button style={{ marginRight: "0.5rem" }} className="account-button" label="Account" icon="pi pi-user" onClick={handleLogout} />
+                <Button style={{ marginRight: "0.5rem" }} className="account-button p-button-help" label="Houses" icon="pi pi-home" onClick={handleHouses} />
                 <Button style={{ marginRight: "0.5rem" }} className="logout-button" label="Logout" icon="pi pi-sign-out" onClick={handleLogout} />
             </div>
         </div>

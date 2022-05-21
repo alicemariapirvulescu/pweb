@@ -50,3 +50,19 @@ export interface FilterRequest{
     numPeople : number
 }
 
+export interface BookingUpdateRequest{
+    bookingId : number ;
+    bookingStatus: string;
+}
+
+export interface NewBookingRequest{
+
+    startDate: any | undefined,
+    endDate: any | undefined,
+    phone: string,
+    message: string,
+    peopleNo: string,
+    houseId: number
+
+}
+

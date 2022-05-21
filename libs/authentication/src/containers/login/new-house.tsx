@@ -150,6 +150,25 @@ const NewHouse = () => {
         console.log('Add house was called');
     }
 
+    const onClickSave = (e : any) => {
+        e.preventDefault();
+        const housePayload: HouseRequest = {
+            description: description,
+            phone: phone,
+            latitude: latitude,
+            longitude: longitude,
+            capacity: capacity,
+            bookingPeriod: bookingPeriod,
+            image: image,
+            name: name,
+            address: address,
+            city: city
+        }
+        dispatch(saveHouse(housePayload))
+        console.log('Add house was called');
+        navigate('/account-owner');
+    }
+
 
     return (
         <div className="card">
@@ -243,7 +262,7 @@ const NewHouse = () => {
                     </div>
 
                     <div>
-                        <Button style={{ marginTop: '2rem' }} icon="pi pi-home" label="Save"/>
+                        <Button style={{ marginTop: '2rem' }} icon="pi pi-home" label="Save" onClick = {onClickSave}/>
                     </div>
 
                 </form>

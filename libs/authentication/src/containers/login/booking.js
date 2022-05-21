@@ -26,7 +26,6 @@ const Booking = () => {
     const [numberOfPeople, setNumberOfPeople] = useState();
     let navigate = useNavigate();
     const [message, setMessage] = useState(undefined);
-    const [date, setdate] = useState(undefined);
     const [showMessage, setShowMessage] = useState(false);
     const [dates, setDates] = useState();
     const [phone, setPhone] = useState();
@@ -44,14 +43,15 @@ const Booking = () => {
                 <InputNumber className='center' inputId="minmax-buttons" value={numberOfPeople} onValueChange={(e) => setNumberOfPeople(e.value)} mode="decimal" showButtons min={0} max={100}
                     placeholder={'Person number'} required />
 
-                <div className="field" >
-                    <InputText style={{ width: '32rem' }} id="phone" aria-describedby="Description-help" onChange={(e) => setPhone(e.target.value)} 
-                    placeholder={'Your phone'} required />
+                <div style={{ width: '45rem', marginTop: "1rem" }}  >
+                    <InputText style={{ width: '49.5rem', marginLeft: '1rem' }} id="phone" aria-describedby="Description-help" onChange={(e) => setPhone(e.target.value)}
+                        placeholder={'Your phone'} required value={phone}/>
                 </div>
 
-                <p style={{ lineHeight: 1.5, textIndent: '1rem', textAlign: '-webkit-center' }}>
-                    Add a mesasge for the owner. Who are you travelling with? Do you have pets? Anything useful. </p>
-                <InputTextarea style={{ width: '45rem', marginTop: "1rem" }} value={message} onChange={(e) => setMessage(e.target.value)} rows={5} cols={32} />
+                <div style={{ marginTop: '1rem', lineHeight: 1.5, textIndent: '1rem', textAlign: '-webkit-center' }}>
+                    <p> Add a message for the owner. Who are you travelling with? Do you have pets? Anything useful. </p>
+                </div>
+                <InputTextarea style={{ width: '49.5rem', marginTop: "1rem" }} value={message} onChange={(e) => setMessage(e.target.value)} rows={5} cols={32} />
 
                 <div style={{ display: 'block' }}>
                     <Button label="Confirm" className='mt' icon="pi pi-check" onClick={submitReservation} autoFocus />
@@ -67,21 +67,20 @@ const Booking = () => {
         e.preventDefault();
         console.log("Click back reservation");
         setNumberOfPeople(null);
-        setdate(null);
+        setDates(null);
         setEnableReservation(false);
         setPosition('right');
     }
 
     const submitReservation = (e) => {
         e.preventDefault();
-        console.log("Call to submit reservation");
         setShowMessage(true);
     }
 
     const onHide = () => {
         setEnableReservation(false);
         setNumberOfPeople(null);
-        setdate(null);
+        setDates(null);
         setShowMessage(false);
     }
 

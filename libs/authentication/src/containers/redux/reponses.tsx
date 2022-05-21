@@ -10,12 +10,13 @@ export interface LoginResponse {
 
 export interface RefugeeState {
     isLoggedIn: boolean,
-    user: LoginResponse | undefined,
+    user: LoginResponse ,
     toastError: string,
     toastSuccess: string,
     pendingReservations: BookingRequest[],
     acceptedReservations: BookingRequest[],
     houses: HouseResponse[],
+    house: HouseResponse | undefined,
     myhouses: HouseResponse[],
     cities: string[],
     houseId: number
@@ -35,7 +36,7 @@ export interface BookingRequest{
     guestNo: number,
     ownerPhone: string,
     ownerName: string
-  
+    address: string
 }
 
 export interface BookingResponse{

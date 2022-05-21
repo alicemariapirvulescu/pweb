@@ -26,12 +26,10 @@ const Bookings = () => {
     let navigate = useNavigate();
     const dispatch = useDispatch();
     const [enableReservations, setEnableReservations] = useState(true);
-    const { reservations } = useSelector((state) => state.auth)
+    const { acceptedReservations, pendingReservations } = useSelector((state) => state.auth)
 
     useEffect(() => {
         dispatch(getBookings());
-        console.log(reservations);
-
     }, []);
 
 
@@ -49,17 +47,17 @@ const Bookings = () => {
         );
     }
 
-    const listItems = reservations.map((r) =>
+    const listItems = pendingReservations.map((r) =>
         <Card style={{ marginBottom: "1rem", background: "rgb(248, 249, 250)" }}>
             <div className='rowC'>
                 <Avatar label={r.nameGuest != null ? r.nameGuest.charAt(0) : 'U'} className="mr-2" shape="circle" size="xlarge" />
                 <div>
-                    <div style={{ textAlign: "left" }}> Request for house: <b> {r.nameHouse}</b> </div>
-                    <div style={{ textAlign: "left" }}> Name of guest: <b> {r.nameGuest}</b> </div>
-                    <div style={{ textAlign: "left" }}> Number of people: <b> {r.numPeople}</b> </div>
-                    <div style={{ textAlign: "left" }}> Period of housing: <b> {r.startPeriod} - {r.endPeriod} </b> </div>
-                    <div style={{ textAlign: "left" }}> Phone number of guest: <b> {r.phoneGuest} </b> </div>
-                    <div style={{ textAlign: "left" }}> Message for you: <b> {r.message} </b> </div>
+                    <div style={{ textAlign: "left" }}> Request for house: <b> {r.houseName}</b> </div>
+                    <div style={{ textAlign: "left" }}> Name of guest: <b> {r.guestName}</b> </div>
+                    <div style={{ textAlign: "left" }}> Number of people: <b> {r.guestNo}</b> </div>
+                    <div style={{ textAlign: "left" }}> Period of housing: <b> {r.startDate} - {r.endDate} </b> </div>
+                    <div style={{ textAlign: "left" }}> Phone number of guest: <b> {r.guestPhone} </b> </div>
+                    <div style={{ textAlign: "left" }}> Message for you: <b> {r.guestName} </b> </div>
                     <div style={{ textAlign: "right", marginBottom: '1rem' }}> <i>{r.nameGuest}</i> </div>
                     <span className="p-buttonset">
                         <Button className="p-button-success" style={{ width: "10rem" }} label="Accept" icon="pi pi-check-circle" />
@@ -67,28 +65,28 @@ const Bookings = () => {
                     </span>
 
                 </div>
-                <div className="small-image-wrapper" style={{ backgroundImage: `url(data:image/jpeg;base64,${r.image})` }}>
+                <div className="small-image-wrapper" style={{ backgroundImage: `url(${r.image})` }}>
                 </div>
 
             </div>
         </Card>);
 
-    const listAcceptedItems = reservations.map((r) =>
+    const listAcceptedItems = acceptedReservations.map((r) =>
         <Card style={{ marginBottom: "1rem" , background: "rgb(248, 249, 250)"}}>
             <div className='rowC'>
                 <Avatar label={r.nameGuest != null ? r.nameGuest.charAt(0) : 'U'} className="mr-2" shape="circle" size="xlarge" />
                 <div>
-                    <div style={{ textAlign: "left" }}> Request for house: <b> {r.nameHouse}</b> </div>
-                    <div style={{ textAlign: "left" }}> Name of guest: <b> {r.nameGuest}</b> </div>
-                    <div style={{ textAlign: "left" }}> Number of people: <b> {r.numPeople}</b> </div>
-                    <div style={{ textAlign: "left" }}> Period of housing: <b> {r.startPeriod} - {r.endPeriod} </b> </div>
-                    <div style={{ textAlign: "left" }}> Phone number of guest: <b> {r.phoneGuest} </b> </div>
-                    <div style={{ textAlign: "left" }}> Message for you: <b> {r.message} </b> </div>
-                    <div style={{ textAlign: "right", marginBottom: '1rem'}}> <i>{r.nameGuest}</i> </div>
-                        <Button className="p-button-info" style={{ width: "10rem", left: "20%" }} label={r.phoneGuest} icon="pi pi-phone" />
+                    <div style={{ textAlign: "left" }}> Request for house: <b> {r.houseName}</b> </div>
+                    <div style={{ textAlign: "left" }}> Name of guest: <b> {r.guestName}</b> </div>
+                    <div style={{ textAlign: "left" }}> Number of people: <b> {r.guestNo}</b> </div>
+                    <div style={{ textAlign: "left" }}> Period of housing: <b> {r.startDate} - {r.endDate} </b> </div>
+                    <div style={{ textAlign: "left" }}> Phone number of guest: <b> {r.guestPhone} </b> </div>
+                    <div style={{ textAlign: "left" }}> Message for you: <b> {r.guestMessage} </b> </div>
+                    <div style={{ textAlign: "right", marginBottom: '1rem'}}> <i>{r.guestName}</i> </div>
+                        <Button className="p-button-info" style={{ width: "10rem", left: "20%" }} label={r.guestPhone} icon="pi pi-phone" />
 
                 </div>
-                <div className="small-image-wrapper" style={{ backgroundImage: `url(data:image/jpeg;base64,${r.image})` }}>
+                <div className="small-image-wrapper" style={{ backgroundImage: `url(${r.image})` }}>
                 </div>
 
             </div>

@@ -13,6 +13,7 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { InputNumber } from 'primereact/inputnumber';
 import { PrimeIcons } from 'primereact/api';
+import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from "primereact/inputtextarea";
 
 
@@ -28,6 +29,7 @@ const Booking = () => {
     const [date, setdate] = useState(undefined);
     const [showMessage, setShowMessage] = useState(false);
     const [dates, setDates] = useState();
+    const [phone, setPhone] = useState();
 
 
     const renderFooter = (name) => {
@@ -41,6 +43,11 @@ const Booking = () => {
                     placeholder={'Staying dates'} />
                 <InputNumber className='center' inputId="minmax-buttons" value={numberOfPeople} onValueChange={(e) => setNumberOfPeople(e.value)} mode="decimal" showButtons min={0} max={100}
                     placeholder={'Person number'} required />
+
+                <div className="field" >
+                    <InputText style={{ width: '32rem' }} id="phone" aria-describedby="Description-help" onChange={(e) => setPhone(e.target.value)} 
+                    placeholder={'Your phone'} required />
+                </div>
 
                 <p style={{ lineHeight: 1.5, textIndent: '1rem', textAlign: '-webkit-center' }}>
                     Add a mesasge for the owner. Who are you travelling with? Do you have pets? Anything useful. </p>

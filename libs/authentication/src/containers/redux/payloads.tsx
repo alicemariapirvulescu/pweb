@@ -34,17 +34,13 @@ export interface HouseRequest{
     city: string
 }
 
-export interface BookingDates {
-    startDate: Date,
-    endDate : Date
-}
-
 export interface BookingRequest{
 
-    bookingPeriod : BookingDates,
-    numPeople : number,
-    messageGuest : string,
-    numberGuest : number
+    startDate: Date,
+    endDate: Date,
+    city: string,
+    phone: string,
+    capacity: number
 }
 
 export interface FilterRequest{

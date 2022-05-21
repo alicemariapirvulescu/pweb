@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios, { AxiosResponse } from 'axios';
 import { LoginPayload, RegisterPayload, HouseRequest, FilterRequest } from './payloads';
-import { LoginResponse, RefugeeState, BookingRequest, HouseResponse } from './reponses';
+import { LoginResponse, RefugeeState, BookingRequest,BookingResponse, HouseResponse } from './reponses';
 
 
 export const loginUser = createAsyncThunk(
@@ -83,15 +83,15 @@ export const registerUser = createAsyncThunk(
 
 export const getBookings = createAsyncThunk(
   'auth/getReservations',
-  async (): Promise<BookingRequest[]> => {
+  async (): Promise<BookingResponse> => {
     const authToken = localStorage.getItem('token');
-    const response: AxiosResponse<BookingRequest[]> = await axios.get('http://localhost:8080/refugees/api/dashboard/houses',
+    const response: AxiosResponse<BookingResponse> = await axios.get('http://localhost:8080/refugees/api/dashboard/bookings',
       {
         headers: {
           Authorization: 'Bearer ' + authToken //the token is a variable which holds the token
         }
       });
-    console.log("Get reservations was called")
+    console.log("Get bookingsd was called")
     return response.data;
   }
 
@@ -185,7 +185,8 @@ const initialState: RefugeeState =
 {
   isLoggedIn: false, user: undefined,
   toastError: '', toastSuccess: '',
-  reservations: [], houses: [], myhouses: [], cities: ['']
+  houses: [], myhouses: [], cities: [''],
+  houseId: 0, acceptedReservations: [], pendingReservations: []
 }
 
 // Then, handle actions in your reducers:
@@ -247,8 +248,14 @@ export const authSlice = createSlice({
 
     builder.addCase(getBookings.fulfilled, (state, response) => {
       // Add reservations to the slice array
-      state.reservations = response.payload;
-      console.log(state.reservations);
+      state.acceptedReservations = response.payload.approvedNotifications;
+      state.pendingReservations = response.payload.pendingNotifications;
+      authSlice.caseReducers.setToastSuccess(state, { payload: 'Get bookings successful!', type: 'toast' })
+    })
+
+    builder.addCase(getBookings.rejected, (state, response) => {
+      // Add reservations to the slice array
+      authSlice.caseReducers.setToastError(state, { payload: 'Get bookings failed!', type: 'toast' })
     })
 
     builder.addCase(saveHouse.fulfilled, (state, response) => {

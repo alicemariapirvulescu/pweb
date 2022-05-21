@@ -13,20 +13,34 @@ export interface RefugeeState {
     user: LoginResponse | undefined,
     toastError: string,
     toastSuccess: string,
-    reservations: BookingRequest[],
+    pendingReservations: BookingRequest[],
+    acceptedReservations: BookingRequest[],
     houses: HouseResponse[],
     myhouses: HouseResponse[],
-    cities: string[]
+    cities: string[],
+    houseId: number
 }
 
 export interface BookingRequest{
-    nameHouse: string,
-    numPeople: number,
-    startPeriod: Date,
-    endPeriod: Date,
-    nameGuest: string,
-    phoneGuest: string,
-    message: string,
+
+    id: number,
+    startDate: Date,
+    endDate: Date,
+    bookingStatus: string,
+    houseName: string, 
+    image: string,
+    guestName: string,
+    guestPhone: string,
+    guestMessage: string,
+    guestNo: number,
+    ownerPhone: string,
+    ownerName: string
+  
+}
+
+export interface BookingResponse{
+    approvedNotifications: BookingRequest[],
+    pendingNotifications: BookingRequest[]
 }
 
 export interface HouseResponse {

@@ -69,12 +69,15 @@ const Preferences = () => {
             <InputNumber inputId="minmax-buttons" value={numberOfDays} onValueChange={(e) => setNumberOfDays(e.value)} mode="decimal" showButtons min={0} max={100}
                 placeholder={'Person number'} required />
 
+            <div className='rowC'>
+                
             <h5 style={{ marginTop: '1rem' }}></h5>
-            <Button style={{ marginTop: '1rem', marginLeft: '4.5rem' }} label="Apply" icon='pi pi-search-plus' onClick={() => onApply()} />
+            <Button style={{ marginTop: '2rem', marginLeft: '0.5rem' }} label="Apply" icon='pi pi-search-plus' onClick={() => onApply()} />
 
             <h5 style={{ marginTop: '1rem' }}></h5>
-            <Button style={{ marginTop: '1rem', marginLeft: '4.5rem' }} label="Clear" icon='pi pi-ban' onClick={() => onClear()} />
-
+            <Button className="p-button-secondary" style={{ marginTop: '2rem', marginLeft: '0.5rem' }} label="Clear" icon='pi pi-ban' onClick={() => onClear()} />
+            
+            </div>
         </div>
     );
 }

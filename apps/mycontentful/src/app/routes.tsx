@@ -2,9 +2,9 @@ import Login from 'libs/authentication/src/containers/login/login'
 import AccountGuest from 'libs/authentication/src/containers/login/account-guest'
 import AccountOwner from 'libs/authentication/src/containers/login/account-owner'
 import Register from 'libs/authentication/src/containers/login/register'
-import Restaurant from 'libs/authentication/src/containers/login/restaurant'
 import NewHouse from 'libs/authentication/src/containers/login/new-house'
-import Bookings from 'libs/authentication/src/containers/login/reservations'
+import BookingsOwner from 'libs/authentication/src/containers/login/bookings-owner'
+import BookingsGuest from 'libs/authentication/src/containers/login/bookings-guest'
 import SelectRole from 'libs/authentication/src/containers/login/select-role'
 import OAuth2RedirectHandler from 'libs/authentication/src/containers/oauth2/OauthRedirect'
 const routes = [
@@ -24,8 +24,13 @@ const routes = [
     },
 
     {
-        path: "/bookings",
-        component: <Bookings />
+        path: "/bookings-owner",
+        component: <BookingsOwner />
+    },
+
+    {
+        path: "/bookings-guest",
+        component: <BookingsGuest />
     },
 
     {

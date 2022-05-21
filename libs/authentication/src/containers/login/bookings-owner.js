@@ -15,14 +15,14 @@ import { Button } from 'primereact/button';
 import { InputNumber } from 'primereact/inputnumber';
 import React, { useEffect, useState } from 'react';
 import { Avatar } from 'primereact/avatar';
-import { authSlice, getBookings } from '../redux/slice';
+import { authSlice, getBookings, updateReservationRequest } from '../redux/slice';
 import { Card } from 'primereact/card';
 
 import warning from './icons/warning.svg';
 import './styles.scss';
-import Header from './header-owner';
+import HeaderOwner from './header-owner';
 
-const Bookings = () => {
+const BookingsOwner = () => {
     let navigate = useNavigate();
     const dispatch = useDispatch();
     const [enableReservations, setEnableReservations] = useState(true);
@@ -39,30 +39,45 @@ const Bookings = () => {
         setEnableReservations(false);
     }
 
-    const renderFooter = () => {
-        return (
-            <div>
-                {listItems}
-            </div>
-        );
+    const setReservationAsDenied = (id) => {
+        rejectReservationRequest(id);
+        dispatch(getBookings());
+
+        async function rejectReservationRequest(id) {
+            await(dispatch(updateReservationRequest({bookingId : id, bookingStatus : 'REJECTED'})));
+        }
     }
+
+    const setReservationAsAccepted = (id) => {
+        acceptResevationRequest(id);
+        dispatch(getBookings());
+
+        async function acceptResevationRequest(id) {
+            await(dispatch(updateReservationRequest({bookingId : id, bookingStatus : 'APPROVED'})));
+        }
+    }
+
 
     const listItems = pendingReservations.map((r) =>
         <Card style={{ marginBottom: "1rem", background: "rgb(248, 249, 250)" }}>
             <div className='rowC'>
-                <Avatar label={r.nameGuest != null ? r.nameGuest.charAt(0) : 'U'} className="mr-2" shape="circle" size="xlarge" />
+                <Avatar label={r.guestName != null ? r.guestName.charAt(0) : 'U'} className="mr-2" shape="circle" size="xlarge" />
                 <div>
-                    <div style={{ textAlign: "left" }}> Request for house: <b> {r.houseName}</b> </div>
-                    <div style={{ textAlign: "left" }}> Name of guest: <b> {r.guestName}</b> </div>
-                    <div style={{ textAlign: "left" }}> Number of people: <b> {r.guestNo}</b> </div>
-                    <div style={{ textAlign: "left" }}> Period of housing: <b> {r.startDate} - {r.endDate} </b> </div>
-                    <div style={{ textAlign: "left" }}> Phone number of guest: <b> {r.guestPhone} </b> </div>
-                    <div style={{ textAlign: "left" }}> Message for you: <b> {r.guestName} </b> </div>
-                    <div style={{ textAlign: "right", marginBottom: '1rem' }}> <i>{r.nameGuest}</i> </div>
-                    <span className="p-buttonset">
-                        <Button className="p-button-success" style={{ width: "10rem" }} label="Accept" icon="pi pi-check-circle" />
-                        <Button className="p-button-danger" style={{ width: "10rem" }} label="Deny" icon="pi pi-times-circle" />
-                    </span>
+                    <div className="mb" style={{ textAlign: "left" }}> Request for house: <b> {r.houseName}</b> </div>
+                    <div className="mb" style={{ textAlign: "left" }}> Name of guest: <b> {r.guestName}</b> </div>
+                    <div className="mb" style={{ textAlign: "left" }}> Number of people: <b> {r.guestNo}</b> </div>
+                    <div className="mb" style={{ textAlign: "left" }}> Period of housing: <b> {r.startDate} / {r.endDate} </b> </div>
+                    <div className="mb" style={{ textAlign: "left" }}> Phone number of guest: <b> {r.guestPhone} </b> </div>
+                    <div className="mb" style={{ textAlign: "left" }}> Message for you: <b> {r.guestMessage} </b> </div>
+                    <div className="mb" style={{ textAlign: "right", marginBottom: '1rem' }}> <i>{r.nameGuest}</i> </div>
+                    <div className="p-buttonset" style= {{marginTop: '2rem'}}>
+                        <Button className="p-button-success" style={{ width: "10rem" }} label="Accept" icon="pi pi-check-circle" onClick={() => {
+                            setReservationAsAccepted(r.id)
+                        }} />
+                        <Button className="p-button-danger" style={{ width: "10rem" }} label="Deny" icon="pi pi-times-circle" onClick={() => {
+                            setReservationAsDenied(r.id)
+                        }} />
+                    </div>
 
                 </div>
                 <div className="small-image-wrapper" style={{ backgroundImage: `url(${r.image})` }}>
@@ -72,18 +87,18 @@ const Bookings = () => {
         </Card>);
 
     const listAcceptedItems = acceptedReservations.map((r) =>
-        <Card style={{ marginBottom: "1rem" , background: "rgb(248, 249, 250)"}}>
+        <Card style={{ marginBottom: "1rem", background: "rgb(248, 249, 250)" }}>
             <div className='rowC'>
-                <Avatar label={r.nameGuest != null ? r.nameGuest.charAt(0) : 'U'} className="mr-2" shape="circle" size="xlarge" />
+                <Avatar label={r.guestName != null ? r.guestName.charAt(0) : 'U'} className="mr-2" shape="circle" size="xlarge" />
                 <div>
-                    <div style={{ textAlign: "left" }}> Request for house: <b> {r.houseName}</b> </div>
-                    <div style={{ textAlign: "left" }}> Name of guest: <b> {r.guestName}</b> </div>
-                    <div style={{ textAlign: "left" }}> Number of people: <b> {r.guestNo}</b> </div>
-                    <div style={{ textAlign: "left" }}> Period of housing: <b> {r.startDate} - {r.endDate} </b> </div>
-                    <div style={{ textAlign: "left" }}> Phone number of guest: <b> {r.guestPhone} </b> </div>
-                    <div style={{ textAlign: "left" }}> Message for you: <b> {r.guestMessage} </b> </div>
-                    <div style={{ textAlign: "right", marginBottom: '1rem'}}> <i>{r.guestName}</i> </div>
-                        <Button className="p-button-info" style={{ width: "10rem", left: "20%" }} label={r.guestPhone} icon="pi pi-phone" />
+                    <div className="mb" style={{ textAlign: "left" }}> Request for house: <b> {r.houseName}</b> </div>
+                    <div className="mb" style={{ textAlign: "left" }}> Name of guest: <b> {r.guestName}</b> </div>
+                    <div className="mb" style={{ textAlign: "left" }}> Number of people: <b> {r.guestNo}</b> </div>
+                    <div className="mb" style={{ textAlign: "left" }}> Period of housing: <b> {r.startDate} / {r.endDate} </b> </div>
+                    <div className="mb" style={{ textAlign: "left" }}> Phone number of guest: <b> {r.guestPhone} </b> </div>
+                    <div className="mb" style={{ textAlign: "left" }}> Message for you: <b> {r.guestMessage} </b> </div>
+                    <div className="mb" style={{ textAlign: "right", marginBottom: '1rem' }}> <i>{r.guestName}</i> </div>
+                    <Button className="p-button-info" style={{ width: "10rem", left: "50%" }} label={r.guestPhone} icon="pi pi-phone" />
 
                 </div>
                 <div className="small-image-wrapper" style={{ backgroundImage: `url(${r.image})` }}>
@@ -97,21 +112,16 @@ const Bookings = () => {
 
     return (
         <div>
-            <Header />
+            <HeaderOwner />
             <div className='rowC'>
 
                 <Card style={{ width: '35%' }} className='Reservations-card'>
-                    <h3>
+                    <h4>
                         Reservations requests still pending:
-                    </h3>
+                    </h4>
                     <div>
                         {listItems}
-
-                        <div style={{ float: 'right !important' }} className='rowC'>
-                            <Button label="Back" className="button-inline p-button-secondary mt" icon="pi pi-times"
-                                onClick={disableReservationsPopup} />
-                        </div> </div>
-
+                    </div>
                 </Card>
 
                 <Card className="warning">
@@ -148,9 +158,9 @@ const Bookings = () => {
                 </Card>
 
                 <Card style={{ width: '35%' }} className='Reservations-card'>
-                    <h3>
+                    <h4>
                         Reservations accepted:
-                    </h3>
+                    </h4>
                     <div>
                         {listAcceptedItems}
                     </div>
@@ -161,4 +171,4 @@ const Bookings = () => {
 
     );
 }
-export default Bookings;
+export default BookingsOwner;

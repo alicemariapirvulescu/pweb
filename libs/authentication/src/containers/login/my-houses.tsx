@@ -42,38 +42,36 @@ const MyHouses = () => {
                         </div>
                     </div>
                     <div className="product-grid-item-content">
-                    <div className="image-wrapper" style={{ backgroundImage: `url(${data.image})` }}>
-                    
+                        <div className="image-wrapper" style={{ backgroundImage: `url(${data.image})` }}>
+
                         </div>
                         <div className="product-description">{data.name}</div>
 
                         <div className='rowC'>
-                            <div style={{width : "30%"}}>
-                                <div className='rowC'>
+                            <div style={{ width: "30%" }}>
+                                <div className='rowC' style={{ width: "100%" }}>
                                     <i className="pi pi-map-marker product-category-icon"></i>
                                     <div >{data.city}</div>
                                 </div>
 
-                                <div className='rowC' style={{width : "100%"}}>
+                                <div className='rowC' style={{ width: "100%" }}>
                                     <i className="pi pi-users product-category-icon"></i>
                                     <div > {data.capacity} people capacity</div>
                                 </div>
 
-                                <div className='rowC'style={{width : "100%"}}>
+                                <div className='rowC' style={{ width: "100%" }}>
                                     <i className="pi pi-calendar-times product-category-icon"></i>
                                     <div> {data.bookingPeriod} days</div>
                                 </div>
 
                             </div>
-                                <div  style={{ width:"65%",height : '5rem', marginRight:'1rem' }}className="medium-writing"> "<i> {data.description} "</i>
+                            <div style={{ width: "65%", height: '5rem', marginRight: '1rem' }} className="medium-writing"> "<i> {data.description} "</i>
                             </div>
                         </div>
 
-
-                        <Button style={{ float: 'left' }} icon="pi pi-heart" className="p-button-lg p-button-rounded p-button-danger p-button-text" tooltip="Add to favorites" tooltipOptions={{ position: 'bottom' }} aria-label="Bookmark" />
                         <div className="product-grid-item-bottom " style={{ marginTop: '0rem', marginLeft: "11.5rem", alignContent: 'center !important', justifyContent: 'center !important' }}>
-                        <Button label="Edit" className='mt' icon="pi pi-check"/>
-                   </div>
+                            <Button style={{  marginLeft: "6rem" }} label="Edit" className='mt' icon="pi pi-user-edit" />
+                        </div>
 
                     </div>
                 </div>

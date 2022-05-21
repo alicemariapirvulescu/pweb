@@ -10,7 +10,7 @@ import Map from './Map';
 import HeaderGuest from './header-guest';
 import Preferences from './preferences';
 import { Splitter, SplitterPanel } from 'primereact/splitter';
-import Houses from './houses';
+import Houses from './houses-guest';
 import './refugees.css';
 
 export interface IAccountGuestProps {

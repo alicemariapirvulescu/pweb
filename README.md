@@ -18,6 +18,7 @@ Below are our core plugins:
 
 - [React](https://reactjs.org)
   - `npm install --save-dev @nrwl/react`
+  - npm start
 - Web (no framework frontends)
   - `npm install --save-dev @nrwl/web`
 - [Angular](https://angular.io)
